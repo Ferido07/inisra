@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inisra Web App MVC", "Inisra Web App MVC\Inisra Web App MVC.csproj", "{8CCE8A92-628B-44ED-A56B-F3ED47316131}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inisra Web App MVC.Tests", "Inisra Web App MVC.Tests\Inisra Web App MVC.Tests.csproj", "{C9C4B4DA-0475-4B05-9913-4B2B5F385691}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CCE8A92-628B-44ED-A56B-F3ED47316131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CCE8A92-628B-44ED-A56B-F3ED47316131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CCE8A92-628B-44ED-A56B-F3ED47316131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CCE8A92-628B-44ED-A56B-F3ED47316131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9C4B4DA-0475-4B05-9913-4B2B5F385691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9C4B4DA-0475-4B05-9913-4B2B5F385691}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9C4B4DA-0475-4B05-9913-4B2B5F385691}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9C4B4DA-0475-4B05-9913-4B2B5F385691}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
