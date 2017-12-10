@@ -187,6 +187,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712100650169_Initial-Create-for-InisraContext.cs" />
+    <Compile Include="Migrations\201712100650169_Initial-Create-for-InisraContext.Designer.cs">
+      <DependentUpon>201712100650169_Initial-Create-for-InisraContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -285,6 +289,11 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201712100650169_Initial-Create-for-InisraContext.resx">
+      <DependentUpon>201712100650169_Initial-Create-for-InisraContext.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
