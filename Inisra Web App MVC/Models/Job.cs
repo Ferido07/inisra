@@ -22,8 +22,8 @@ namespace Inisra_Web_App_MVC.Models
 
         public string Location { set; get; }
 
-        [Timestamp]
-        public string PostDate { set; get; }
+        [Display(Name = "Post Time")]
+        public DateTime PostDate { set; get; } = DateTime.Now;
 
         [Display(Name ="Application Deadline")]
         public DateTime ApplicationDeadlineDate { set; get; }
