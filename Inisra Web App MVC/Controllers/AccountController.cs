@@ -151,7 +151,11 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new InisraUser { UserName = model.Email, Email = model.Email };
+                var user = new CompanyUser { UserName = model.Email, Email = model.Email };
+                var company = new Company { Email = model.Email , Name="JObs" ,PhoneNo=00 };
+                var db = new DAL.InisraContext();
+                db.Companies.Add(company);
+                db.SaveChanges();
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -367,7 +371,7 @@ namespace Inisra_Web_App_MVC.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new InisraUser { UserName = model.Email, Email = model.Email };
+                var user = new CompanyUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

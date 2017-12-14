@@ -12,6 +12,10 @@ namespace Inisra_Web_App_MVC.Models
         // [DatabaseGenerated(DatabaseGeneratedOption.)]
         public int ID { get; set; }
 
+        /*was added to establish a one to one relationship between JobSeeker and JobSeeker User account but
+         removed in order to maintain its independence from implementation of user management */
+        //public Guid UserID { get; set; }
+
         [Required, Display(Name = "First Name")]
         [StringLength(40, ErrorMessage = "First name cannot be longer than 40 characters.")]
         public string FirstName { get; set; }
@@ -40,6 +44,9 @@ namespace Inisra_Web_App_MVC.Models
 
         //todo add cv
 
+        /*It doesnt need to hold the account as it is independent and in different use cases(domain)*/
+        //public virtual JobSeekerUser JobSeekerUser { get; set; }
+
         public virtual List<Education> Educations { get; set; }
 
         public virtual List<Skill> Skills { get; set; }
@@ -54,6 +61,9 @@ namespace Inisra_Web_App_MVC.Models
     {
         public int ID { get; set; }
 
+        /*Same as jobseeker case*/
+        //public Guid CompanyUserID { get; set; }
+
         [Required, StringLength(50)]
         public string Name { set; get; }
 
@@ -67,6 +77,9 @@ namespace Inisra_Web_App_MVC.Models
         //todo check if both stringlength and multilinetext are necessary?
         [StringLength(250), DataType(DataType.MultilineText)]
         string Description { set; get; }
+        
+        /*same as jobseeker navigation canceling*/
+        //public virtual CompanyUser CompanyUser { get; set; }
 
         public ICollection<Job> Jobs { set; get; }
 

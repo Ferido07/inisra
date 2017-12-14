@@ -10,7 +10,7 @@ namespace Inisra_Web_App_MVC.DAL
     public class InisraContext : DbContext 
     {
         public InisraContext()
-            : base("InisraDB")
+            : base("InisraContext")
         {
 
         }
