@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Inisra_Web_App_MVC.Models
 {
     // You can add profile data for the user by adding more properties to your InisraUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public abstract class InisraUser : IdentityUser
+    public class InisraUser : IdentityUser
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<InisraUser> manager)
         {
@@ -20,9 +20,9 @@ namespace Inisra_Web_App_MVC.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<InisraUser>
+    public class InisraIdentityContext : IdentityDbContext<InisraUser>
     {
-        public ApplicationDbContext()
+        public InisraIdentityContext()
             : base("InisraContext", throwIfV1Schema: false)
         {
         }
@@ -48,9 +48,9 @@ namespace Inisra_Web_App_MVC.Models
             });
         }
 
-        public static ApplicationDbContext Create()
+        public static InisraIdentityContext Create()
         {
-            return new ApplicationDbContext();
+            return new InisraIdentityContext();
         }
     }
 
@@ -58,7 +58,7 @@ namespace Inisra_Web_App_MVC.Models
     {
         //[Key]
         //[ForeignKey("JobSeeker")] removed ecause default values used
-        public int JobSeekerID { get; set; }
+        public int? JobSeekerID { get; set; }
         public virtual JobSeeker JobSeeker { get; set; }
 
     }
@@ -66,7 +66,7 @@ namespace Inisra_Web_App_MVC.Models
     public class CompanyUser : InisraUser
     {
         //[ForeignKey("Company")]
-        public int CompanyID { get; set; }
+        public int? CompanyID { get; set; }
         public virtual Company Company { get; set; }
     }
 

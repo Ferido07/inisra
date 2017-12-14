@@ -152,10 +152,10 @@ namespace Inisra_Web_App_MVC.Controllers
             if (ModelState.IsValid)
             {
                 var user = new CompanyUser { UserName = model.Email, Email = model.Email };
-                var company = new Company { Email = model.Email , Name="JObs" ,PhoneNo=00 };
+                /*var company = new Company { Email = model.Email , Name="JObs" ,PhoneNo=00 };
                 var db = new DAL.InisraContext();
                 db.Companies.Add(company);
-                db.SaveChanges();
+                db.SaveChanges();*/
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

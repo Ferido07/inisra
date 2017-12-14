@@ -42,7 +42,7 @@ namespace Inisra_Web_App_MVC
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<InisraUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<InisraUser>(context.Get<InisraIdentityContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<InisraUser>(manager)
             {

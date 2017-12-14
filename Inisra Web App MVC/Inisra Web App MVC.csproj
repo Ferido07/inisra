@@ -187,6 +187,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="IdentityMigrations\201712140825333_Initial.cs" />
+    <Compile Include="IdentityMigrations\201712140825333_Initial.Designer.cs">
+      <DependentUpon>201712140825333_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IdentityMigrations\Configuration.cs" />
     <Compile Include="Migrations\201712100650169_Initial-Create-for-InisraContext.cs" />
     <Compile Include="Migrations\201712100650169_Initial-Create-for-InisraContext.Designer.cs">
       <DependentUpon>201712100650169_Initial-Create-for-InisraContext.cs</DependentUpon>
@@ -291,6 +296,9 @@
     <Content Include="Scripts\jquery-3.2.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="IdentityMigrations\201712140825333_Initial.resx">
+      <DependentUpon>201712140825333_Initial.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712100650169_Initial-Create-for-InisraContext.resx">
       <DependentUpon>201712100650169_Initial-Create-for-InisraContext.cs</DependentUpon>
     </EmbeddedResource>
