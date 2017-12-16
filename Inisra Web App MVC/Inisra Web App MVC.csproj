@@ -184,6 +184,7 @@
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DAL\InisraContext.cs" />
+    <Compile Include="DAL\MigrationContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -192,11 +193,11 @@
       <DependentUpon>201712140825333_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="IdentityMigrations\Configuration.cs" />
-    <Compile Include="Migrations\201712100650169_Initial-Create-for-InisraContext.cs" />
-    <Compile Include="Migrations\201712100650169_Initial-Create-for-InisraContext.Designer.cs">
+    <Compile Include="InisraEntityMigrations\201712100650169_Initial-Create-for-InisraContext.cs" />
+    <Compile Include="InisraEntityMigrations\201712100650169_Initial-Create-for-InisraContext.Designer.cs">
       <DependentUpon>201712100650169_Initial-Create-for-InisraContext.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="InisraEntityMigrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\Certificate.cs" />
@@ -299,7 +300,7 @@
     <EmbeddedResource Include="IdentityMigrations\201712140825333_Initial.resx">
       <DependentUpon>201712140825333_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712100650169_Initial-Create-for-InisraContext.resx">
+    <EmbeddedResource Include="InisraEntityMigrations\201712100650169_Initial-Create-for-InisraContext.resx">
       <DependentUpon>201712100650169_Initial-Create-for-InisraContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
