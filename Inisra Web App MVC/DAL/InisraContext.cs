@@ -33,6 +33,13 @@ namespace Inisra_Web_App_MVC.DAL
         {
             base.OnModelCreating(modelBuilder);
 
+           // modelBuilder.Entity<IdentityUser>().ToTable("InisraUsers");
+            modelBuilder.Entity<InisraUser>().ToTable("InisraUsers", "dbo");
+            modelBuilder.Entity<IdentityRole>().ToTable("InisraRoles", "dbo");
+            modelBuilder.Entity<IdentityUserRole>().ToTable("InisraUserRoles", "dbo");
+            modelBuilder.Entity<IdentityUserLogin>().ToTable("InisraUserLogins", "dbo");
+            modelBuilder.Entity<IdentityUserClaim>().ToTable("InisraUserClaims", "dbo");
+
             modelBuilder.Entity<JobSeekerUser>().Map(m =>
             {
                 m.MapInheritedProperties();

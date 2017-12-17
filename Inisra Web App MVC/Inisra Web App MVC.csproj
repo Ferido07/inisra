@@ -191,6 +191,10 @@
     <Compile Include="Migrations\201712170928331_Initial-after-migration-fix.Designer.cs">
       <DependentUpon>201712170928331_Initial-after-migration-fix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712171702348_Rename-Identity-Tables.cs" />
+    <Compile Include="Migrations\201712171702348_Rename-Identity-Tables.Designer.cs">
+      <DependentUpon>201712171702348_Rename-Identity-Tables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -293,6 +297,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712170928331_Initial-after-migration-fix.resx">
       <DependentUpon>201712170928331_Initial-after-migration-fix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712171702348_Rename-Identity-Tables.resx">
+      <DependentUpon>201712171702348_Rename-Identity-Tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
