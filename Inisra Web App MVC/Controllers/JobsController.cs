@@ -14,7 +14,7 @@ namespace Inisra_Web_App_MVC.Controllers
 {
     public class JobsController : Controller
     {
-        private InisraEntitiesContext db = new InisraEntitiesContext();
+        private InisraContext db = new InisraContext();
 
         // GET: Jobs
         public async Task<ActionResult> Index()
