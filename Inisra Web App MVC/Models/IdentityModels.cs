@@ -20,39 +20,7 @@ namespace Inisra_Web_App_MVC.Models
         }
     }
 
-    public class InisraIdentityContext : IdentityDbContext<InisraUser>
-    {
-        public InisraIdentityContext()
-            : base("InisraContext", throwIfV1Schema: false)
-        {
-        }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<JobSeekerUser>().Map(m =>
-            {
-                m.MapInheritedProperties();
-                m.ToTable("JobSeekerUsers");
-            });
-            modelBuilder.Entity<CompanyUser>().Map(m =>
-            {
-                m.MapInheritedProperties();
-                m.ToTable("CompanyUsers");
-            });
-            modelBuilder.Entity<Administrator>().Map(m =>
-            {
-                m.MapInheritedProperties();
-                m.ToTable("Administrators");
-            });
-        }
-
-        public static InisraIdentityContext Create()
-        {
-            return new InisraIdentityContext();
-        }
-    }
+   
 
     public class JobSeekerUser : InisraUser
     {

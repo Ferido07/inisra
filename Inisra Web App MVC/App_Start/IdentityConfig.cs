@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Inisra_Web_App_MVC.Models;
+using Inisra_Web_App_MVC.DAL;
 
 namespace Inisra_Web_App_MVC
 {
@@ -42,7 +43,7 @@ namespace Inisra_Web_App_MVC
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<InisraUser>(context.Get<InisraIdentityContext>()));
+            var manager = new ApplicationUserManager(new UserStore<InisraUser>(context.Get<InisraContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<InisraUser>(manager)
             {
