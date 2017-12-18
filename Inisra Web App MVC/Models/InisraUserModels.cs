@@ -76,7 +76,7 @@ namespace Inisra_Web_App_MVC.Models
 
         //todo check if both stringlength and multilinetext are necessary?
         [StringLength(250), DataType(DataType.MultilineText)]
-        string Description { set; get; }
+        public string Description { set; get; }
         
         /*same as jobseeker navigation canceling*/
         //public virtual CompanyUser CompanyUser { get; set; }

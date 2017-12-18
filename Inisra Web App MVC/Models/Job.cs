@@ -50,8 +50,8 @@ namespace Inisra_Web_App_MVC.Models
             }
         }
 
-        DateTime LastOpenDate { set; get; }
+        public DateTime LastOpenDate { set; get; }
 
-        DateTime LastClosedDate { set; get; }
+        public DateTime LastClosedDate { set; get; }
     }
 }

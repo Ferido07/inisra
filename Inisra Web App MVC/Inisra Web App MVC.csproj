@@ -195,6 +195,10 @@
     <Compile Include="Migrations\201712171702348_Rename-Identity-Tables.Designer.cs">
       <DependentUpon>201712171702348_Rename-Identity-Tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712181843570_added-description-column-for-company.cs" />
+    <Compile Include="Migrations\201712181843570_added-description-column-for-company.Designer.cs">
+      <DependentUpon>201712181843570_added-description-column-for-company.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -301,6 +305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712171702348_Rename-Identity-Tables.resx">
       <DependentUpon>201712171702348_Rename-Identity-Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712181843570_added-description-column-for-company.resx">
+      <DependentUpon>201712181843570_added-description-column-for-company.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
