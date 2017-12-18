@@ -21,7 +21,7 @@ namespace Inisra_Web_App_MVC.Models
         public string FirstName { get; set; }
 
         [Required, Display(Name = "Last Name")]
-        [StringLength(40, ErrorMessage = "First name cannot be longer than 50 characters.")]
+        [StringLength(40, ErrorMessage = "Last name cannot be longer than 50 characters.")]
         public string LastName { get; set; }
 
         [Required, DataType(DataType.EmailAddress)]
