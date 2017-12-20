@@ -38,19 +38,19 @@ namespace Inisra_Web_App_MVC.Controllers
             return View(job);
         }
 
-        // GET: Jobs/Create
-        public ActionResult Create()
+        // GET: Jobs/Post
+        public ActionResult Post()
         {
             ViewBag.CompanyID = new SelectList(db.Companies, "ID", "Name");
             return View();
         }
 
-        // POST: Jobs/Create
+        // POST: Jobs/Post
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ID,CompanyID,Title,isOpen,isInvitationOnly,Location,PostDate,ApplicationDeadlineDate,Description")] Job job)
+        public async Task<ActionResult> Post([Bind(Include = "ID,CompanyID,Title,isOpen,isInvitationOnly,Location,PostDate,ApplicationDeadlineDate,Description")] Job job)
         {
             if (ModelState.IsValid)
             {

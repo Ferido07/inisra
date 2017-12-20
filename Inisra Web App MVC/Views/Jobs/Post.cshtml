@@ -1,10 +1,10 @@
 ﻿@model Inisra_Web_App_MVC.Models.Job
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Post Job";
 }
 
-<h2>Create</h2>
+<h2>Post job with descriptions.</h2>
 
 
 @using (Html.BeginForm()) 
@@ -32,21 +32,18 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.isOpen, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.isInvitationOnly,"Privacy", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.isOpen)
-                    @Html.ValidationMessageFor(model => model.isOpen, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.isInvitationOnly, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.isInvitationOnly)
-                    @Html.ValidationMessageFor(model => model.isInvitationOnly, "", new { @class = "text-danger" })
+                <div class="row">
+                 
+                    <div class="col-md-2">
+                        @Html.RadioButtonFor(model => model.isInvitationOnly, false, htmlAttributes: new { @class="", @id = "public", @checked="checked", @text="Public"})
+                        @Html.Label("Public", htmlAttributes: new { @class = "control-label", @for = "public" })
+                    </div>
+                    <div class="col-md-10">
+                        @Html.RadioButtonFor(model => model.isInvitationOnly, true, htmlAttributes: new { @class = "", @id = "invitationOnly" })
+                        @Html.Label("Invitation Only", htmlAttributes: new { @class = "control-label", @for = "invitationOnly" })
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,14 +53,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PostDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PostDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PostDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -85,7 +74,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Post" class="btn btn-default" />
             </div>
         </div>
     </div>
