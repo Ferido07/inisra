@@ -42,7 +42,7 @@ namespace Inisra_Web_App_MVC.Models
         public bool isInvitationOnly { set; get; } = false;
 
         //[StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
-        public Location LocationID { set; get; }
+        public int? LocationID { set; get; }
 
         [Display(Name = "Post Time")]
         [DataType(DataType.DateTime)]

@@ -199,6 +199,10 @@
     <Compile Include="Migrations\201712181843570_added-description-column-for-company.Designer.cs">
       <DependentUpon>201712181843570_added-description-column-for-company.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712211441321_Almost-complete-renovation-after-adding-attributes-for-all.cs" />
+    <Compile Include="Migrations\201712211441321_Almost-complete-renovation-after-adding-attributes-for-all.Designer.cs">
+      <DependentUpon>201712211441321_Almost-complete-renovation-after-adding-attributes-for-all.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -309,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712181843570_added-description-column-for-company.resx">
       <DependentUpon>201712181843570_added-description-column-for-company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712211441321_Almost-complete-renovation-after-adding-attributes-for-all.resx">
+      <DependentUpon>201712211441321_Almost-complete-renovation-after-adding-attributes-for-all.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

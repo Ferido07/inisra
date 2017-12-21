@@ -41,7 +41,7 @@ namespace Inisra_Web_App_MVC.Models
         public DateTime? Birthday { get; set; }
 
        // [StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
-        public Location LocationID { set; get; }
+        public int? LocationID { set; get; }
 
         //todo add cv
 
