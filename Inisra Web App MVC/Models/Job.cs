@@ -41,8 +41,8 @@ namespace Inisra_Web_App_MVC.Models
         [Display(Name = "Privacy")]
         public bool isInvitationOnly { set; get; } = false;
 
-        [StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
-        public string Location { set; get; }
+        //[StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
+        public Location LocationID { set; get; }
 
         [Display(Name = "Post Time")]
         [DataType(DataType.DateTime)]
@@ -56,6 +56,8 @@ namespace Inisra_Web_App_MVC.Models
         public string Description { set; get; }
 
         public virtual Company Company { set; get; }
+
+        public virtual Location Location { set; get; }
 
     }
 

@@ -19,6 +19,6 @@ namespace Inisra_Web_App_MVC.Models
         [StringLength(50, ErrorMessage = "Skill cannot be longer than 50 characters.")]
         public string SkillName { get; set; }
 
-        public virtual ICollection<JobSeeker> JobSeeker { get; set; }
+        public virtual ICollection<JobSeeker> JobSeekers { get; set; }
     }
 }

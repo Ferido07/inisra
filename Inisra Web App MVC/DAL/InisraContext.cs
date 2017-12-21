@@ -55,6 +55,21 @@ namespace Inisra_Web_App_MVC.DAL
                 m.MapInheritedProperties();
                 m.ToTable("Administrators");
             });
+
+            modelBuilder.Entity<Application>().HasKey(k => k.JobID).HasKey(k => k.JobSeekerID);
+            modelBuilder.Entity<Invitation>().HasKey(k => k.JobID).HasKey(k => k.JobSeekerID);
+
+            modelBuilder.Entity<JobSeeker>().HasMany(s => s.Skills).WithMany(js => js.JobSeekers)
+                .Map(left => left.MapLeftKey("JobSeekerID").MapRightKey("SkillID")
+                .ToTable("JobSeekerSkills","dbo"));
+
+            modelBuilder.Entity<Company>().HasMany(l => l.Locations).WithMany(c => c.Companies)
+                .Map(left => left.MapLeftKey("CompanyID").MapRightKey("LocationID")
+                .ToTable("CompanyLocations", "dbo"));
+
+            modelBuilder.Entity<Institution>().HasMany(l => l.Locations).WithMany(i => i.Institutions)
+                .Map(left => left.MapLeftKey("InstitutionID").MapRightKey("LocationID")
+                .ToTable("InstitutionLocations", "dbo"));
         }
 
        

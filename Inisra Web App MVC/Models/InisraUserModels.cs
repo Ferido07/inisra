@@ -40,13 +40,15 @@ namespace Inisra_Web_App_MVC.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
 
-        [StringLength(100, ErrorMessage = "Address cannot be longer than 100 characters.")]
-        public string Address { set; get; }
+       // [StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
+        public Location LocationID { set; get; }
 
         //todo add cv
 
         /*It doesnt need to hold the account as it is independent and in different use cases(domain)*/
         //public virtual JobSeekerUser JobSeekerUser { get; set; }
+
+        public virtual Location Location { get; set; }
 
         public virtual ICollection<Education> Educations { get; set; }
 
