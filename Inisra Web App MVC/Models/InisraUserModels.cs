@@ -17,29 +17,30 @@ namespace Inisra_Web_App_MVC.Models
         //public Guid UserID { get; set; }
 
         [Required, Display(Name = "First Name")]
-        [StringLength(40, ErrorMessage = "First name cannot be longer than 40 characters.")]
+        [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
         public string FirstName { get; set; }
 
         [Required, Display(Name = "Last Name")]
-        [StringLength(40, ErrorMessage = "Last name cannot be longer than 50 characters.")]
+        [StringLength(50, ErrorMessage = "Last name cannot be longer than 50 characters.")]
         public string LastName { get; set; }
 
         [Required, DataType(DataType.EmailAddress)]
         public string Email { set; get; }
 
-        [Required, DataType(DataType.PhoneNumber)]
+        [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number", Description = "Primary phone number")]
-        public int PhoneNo { set; get; }
+        public int? PhoneNo { set; get; }
 
         //todo maybe add additional phonenos or change the one already created to collection and mark one as primary
 
         [Display(Name = "Sex")]
-        public Boolean? isFemale { set; get; }
+        public bool? isFemale { set; get; }
         
         [Display(Name = "Birthday"), DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
 
+        [StringLength(100, ErrorMessage = "Address cannot be longer than 100 characters.")]
         public string Address { set; get; }
 
         //todo add cv
@@ -47,11 +48,11 @@ namespace Inisra_Web_App_MVC.Models
         /*It doesnt need to hold the account as it is independent and in different use cases(domain)*/
         //public virtual JobSeekerUser JobSeekerUser { get; set; }
 
-        public virtual List<Education> Educations { get; set; }
+        public virtual ICollection<Education> Educations { get; set; }
 
-        public virtual List<Skill> Skills { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
 
-        public virtual List<Certificate> Certificates { get; set; } 
+        public virtual ICollection<Certificate> Certificates { get; set; } 
         
        // public virtual ICollection<Contact> Contacts { set; get; }
         
@@ -64,25 +65,27 @@ namespace Inisra_Web_App_MVC.Models
         /*Same as jobseeker case*/
         //public Guid CompanyUserID { get; set; }
 
-        [Required, StringLength(50)]
+        [Required, StringLength(100 ,ErrorMessage = "Name cannot be longer than 100 characters.")]
         public string Name { set; get; }
 
         [Required, DataType(DataType.EmailAddress)]
         public string Email { set; get; }
 
-        [Required, DataType(DataType.PhoneNumber)]
+        [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number", Description = "Primary phone number")]
-        public int PhoneNo { set; get; }
+        public int? PhoneNo { set; get; }
 
         //todo check if both stringlength and multilinetext are necessary?
-        [StringLength(250), DataType(DataType.MultilineText)]
+        [StringLength(300, ErrorMessage = "Description cannot be longer than 300 characters."), DataType(DataType.MultilineText)]
         public string Description { set; get; }
         
         /*same as jobseeker navigation canceling*/
         //public virtual CompanyUser CompanyUser { get; set; }
 
-        public ICollection<Job> Jobs { set; get; }
+        public virtual ICollection<Job> Jobs { set; get; }
 
-
+        public virtual ICollection<Location> Locations { set; get; }
     }
+
+
 }

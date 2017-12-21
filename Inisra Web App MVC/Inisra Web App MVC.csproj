@@ -209,6 +209,7 @@
     <Compile Include="Models\Institution.cs" />
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Skill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
