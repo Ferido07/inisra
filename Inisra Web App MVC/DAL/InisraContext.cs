@@ -56,8 +56,8 @@ namespace Inisra_Web_App_MVC.DAL
                 m.ToTable("Administrators");
             });
 
-            modelBuilder.Entity<Application>().HasKey(k => k.JobID).HasKey(k => k.JobSeekerID);
-            modelBuilder.Entity<Invitation>().HasKey(k => k.JobID).HasKey(k => k.JobSeekerID);
+            modelBuilder.Entity<Application>().HasKey(k=>new { k.JobSeekerID, k.JobID });
+            modelBuilder.Entity<Invitation>().HasKey(k => new { k.JobID, k.JobSeekerID });
 
             modelBuilder.Entity<JobSeeker>().HasMany(s => s.Skills).WithMany(js => js.JobSeekers)
                 .Map(left => left.MapLeftKey("JobSeekerID").MapRightKey("SkillID")
