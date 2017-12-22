@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -10,7 +11,7 @@ namespace Inisra_Web_App_MVC.Models
     {
         public int ID { get; set; }
 
-        [Required]
+        [Required, Index(IsUnique = true)]
         [Display(Name="Location")]
         [StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
         public string Name { get; set; }

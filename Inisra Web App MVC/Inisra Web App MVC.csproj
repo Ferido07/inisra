@@ -207,6 +207,14 @@
     <Compile Include="Migrations\201712211835353_Application-and-Invitation-fix.Designer.cs">
       <DependentUpon>201712211835353_Application-and-Invitation-fix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712222015223_RequiredInstitutionName.cs" />
+    <Compile Include="Migrations\201712222015223_RequiredInstitutionName.Designer.cs">
+      <DependentUpon>201712222015223_RequiredInstitutionName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712222025120_Unique-Name-for-Skill-and-Location.cs" />
+    <Compile Include="Migrations\201712222025120_Unique-Name-for-Skill-and-Location.Designer.cs">
+      <DependentUpon>201712222025120_Unique-Name-for-Skill-and-Location.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -323,6 +331,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712211835353_Application-and-Invitation-fix.resx">
       <DependentUpon>201712211835353_Application-and-Invitation-fix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712222015223_RequiredInstitutionName.resx">
+      <DependentUpon>201712222015223_RequiredInstitutionName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712222025120_Unique-Name-for-Skill-and-Location.resx">
+      <DependentUpon>201712222025120_Unique-Name-for-Skill-and-Location.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

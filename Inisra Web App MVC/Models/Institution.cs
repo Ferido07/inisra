@@ -8,6 +8,7 @@ namespace Inisra_Web_App_MVC.Models
     {
         public int ID { get; set; }
 
+        [Required]
         [StringLength(100, ErrorMessage = "Inistitution name cannot be longer than 100 characters.")]
         [Display(Name = "Institution")]
         public string Name { get; set; }

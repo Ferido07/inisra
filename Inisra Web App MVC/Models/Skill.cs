@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,7 +15,7 @@ namespace Inisra_Web_App_MVC.Models
         //Got the Idea from Table of Roles.
         public int ID { get; set; }
 
-        [Required]
+        [Required, Index(IsUnique = true)]
         [Display(Name ="Skill")]
         [StringLength(50, ErrorMessage = "Skill cannot be longer than 50 characters.")]
         public string Name { get; set; }
