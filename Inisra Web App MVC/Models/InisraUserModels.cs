@@ -50,7 +50,7 @@ namespace Inisra_Web_App_MVC.Models
 
         public virtual Location Location { get; set; }
 
-        public virtual ICollection<Education> Educations { get; set; }
+        public virtual ICollection<JobSeekerEducation> JobSeekerEducations { get; set; }
 
         public virtual ICollection<Skill> Skills { get; set; }
 

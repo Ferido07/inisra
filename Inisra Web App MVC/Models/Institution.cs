@@ -18,6 +18,6 @@ namespace Inisra_Web_App_MVC.Models
 
         public virtual ICollection<Location> Locations { get; set; }
 
-        public virtual ICollection<Education> Educations { get; set; }  
+        public virtual ICollection<JobSeekerEducation> JobSeekerEducations { get; set; }  
     }
 }

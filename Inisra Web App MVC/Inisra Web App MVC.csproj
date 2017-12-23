@@ -215,6 +215,10 @@
     <Compile Include="Migrations\201712222025120_Unique-Name-for-Skill-and-Location.Designer.cs">
       <DependentUpon>201712222025120_Unique-Name-for-Skill-and-Location.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712231059524_JobSeekerEducation.cs" />
+    <Compile Include="Migrations\201712231059524_JobSeekerEducation.Designer.cs">
+      <DependentUpon>201712231059524_JobSeekerEducation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -225,6 +229,7 @@
     <Compile Include="Models\Institution.cs" />
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\JobSeekerEducation.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Skill.cs" />
@@ -337,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712222025120_Unique-Name-for-Skill-and-Location.resx">
       <DependentUpon>201712222025120_Unique-Name-for-Skill-and-Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712231059524_JobSeekerEducation.resx">
+      <DependentUpon>201712231059524_JobSeekerEducation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
