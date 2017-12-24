@@ -34,16 +34,16 @@ namespace Inisra_Web_App_MVC
     }
 
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-    public class ApplicationUserManager : UserManager<InisraUser>
+    public class InisraUserManager : UserManager<InisraUser>
     {
-        public ApplicationUserManager(IUserStore<InisraUser> store)
+        public InisraUserManager(IUserStore<InisraUser> store)
             : base(store)
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static InisraUserManager Create(IdentityFactoryOptions<InisraUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<InisraUser>(context.Get<InisraContext>()));
+            var manager = new InisraUserManager(new UserStore<InisraUser>(context.Get<InisraContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<InisraUser>(manager)
             {
@@ -92,19 +92,19 @@ namespace Inisra_Web_App_MVC
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<InisraUser, string>
     {
-        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
+        public ApplicationSignInManager(InisraUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
         }
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(InisraUser user)
         {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+            return user.GenerateUserIdentityAsync((InisraUserManager)UserManager);
         }
 
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
-            return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+            return new ApplicationSignInManager(context.GetUserManager<InisraUserManager>(), context.Authentication);
         }
     }
 }

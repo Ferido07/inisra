@@ -17,14 +17,14 @@ namespace Inisra_Web_App_MVC.Controllers
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private InisraUserManager _userManager;
         private InisraContext context = new InisraContext();
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(InisraUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -42,11 +42,11 @@ namespace Inisra_Web_App_MVC.Controllers
             }
         }
 
-        public ApplicationUserManager UserManager
+        public InisraUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<InisraUserManager>();
             }
             private set
             {

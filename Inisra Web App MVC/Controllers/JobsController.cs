@@ -39,6 +39,7 @@ namespace Inisra_Web_App_MVC.Controllers
         }
 
         // GET: Jobs/Post
+        [Authorize(Roles = "Company")]
         public ActionResult Post()
         {
             ViewBag.CompanyID = new SelectList(db.Companies, "ID", "Name");
@@ -50,6 +51,7 @@ namespace Inisra_Web_App_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Company")]
         public async Task<ActionResult> Post([Bind(Include = "ID,CompanyID,Title,isOpen,isInvitationOnly,Location,PostDate,ApplicationDeadlineDate,Description")] Job job)
         {
             if (ModelState.IsValid)

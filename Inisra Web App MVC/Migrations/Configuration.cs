@@ -109,7 +109,7 @@ namespace Inisra_Web_App_MVC.Migrations
 
             JobSeekerUsers.ForEach(jsu => context.Users.AddOrUpdate(js => js.Email, jsu));
             context.SaveChanges();
-            /*  ApplicationUserManager UserManager = new ApplicationUserManager.c;
+            /*  InisraUserManager UserManager = new InisraUserManager.c;
               var result = UserManager.Create(JobSeekerUsers.ElementAtOrDefault<JobSeekerUser>(0), "");
               var result = UserManager.Create(JobSeekerUsers.ElementAtOrDefault<JobSeekerUser>(0), "");
               var result = UserManager.CreateAsync(JobSeekerUsers.ElementAtOrDefault<JobSeekerUser>(0), "");
