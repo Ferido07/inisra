@@ -28,6 +28,10 @@ namespace Inisra_Web_App_MVC.DAL
         public DbSet<Invitation> Invitations { set; get; }
         public DbSet<Skill> Skills { set; get; }
         public DbSet<Certificate> Certificates { set; get; }
+        public DbSet<Location> Locations { set; get; }
+        public DbSet<Education> Educations { set; get; }
+        public DbSet<Institution> Institutions { set; get; }
+        public DbSet<JobSeekerEducation> JobSeekerEducations { set; get; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

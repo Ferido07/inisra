@@ -21,6 +21,7 @@ namespace Inisra_Web_App_MVC.Models
 
         [Display(Name="Certification Date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? IssueDate { get; set; }
 
         [StringLength(250)]

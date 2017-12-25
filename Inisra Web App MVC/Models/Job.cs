@@ -9,7 +9,7 @@ namespace Inisra_Web_App_MVC.Models
 {
     public enum Rate
     {
-        HOURLY, WEEKLY, MONTHLY, YEARLY
+        Hourly, Weekly, Monthly, Yearly
     }
 
     public class Job
@@ -17,6 +17,7 @@ namespace Inisra_Web_App_MVC.Models
         public int ID { get; set; }
 
         public int CompanyID { set; get; }
+        public virtual Company Company { set; get; }
 
         [Required]
         [StringLength(50, ErrorMessage = "Title cannot be longer than 50 characters.")]
@@ -32,7 +33,6 @@ namespace Inisra_Web_App_MVC.Models
         public int? SalaryCurrency { set; get; }
 
         [Display(Name ="Rate")]
-        [DataType(DataType.Custom)]
         public Rate SalaryRate { set; get; }
 
         [Display(Name = "Open for Application")]
@@ -41,29 +41,32 @@ namespace Inisra_Web_App_MVC.Models
         [Display(Name = "Privacy")]
         public bool isInvitationOnly { set; get; } = false;
 
-        //[StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
         public int? LocationID { set; get; }
+        public virtual Location Location { set; get; }
 
         [Display(Name = "Post Time")]
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime PostDate { set; get; } = DateTime.Now;
 
         [Display(Name ="Application Deadline")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ApplicationDeadlineDate { set; get; }
 
         [DataType(DataType.MultilineText)]
         public string Description { set; get; }
 
-        public virtual Company Company { set; get; }
+        
 
-        public virtual Location Location { set; get; }
+        
 
     }
 
     public class JobHistory
     {
         public int JobID { set; get; }
+        public virtual Job Job { set; get; }
 
         public DateTime UpdateTime { set; get; }
 
@@ -80,6 +83,6 @@ namespace Inisra_Web_App_MVC.Models
 
         public DateTime LastClosedDate { set; get; }
 
-        public virtual Job Job { set; get; }
+        
     }
 }

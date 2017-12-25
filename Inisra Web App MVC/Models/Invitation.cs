@@ -14,6 +14,7 @@ namespace Inisra_Web_App_MVC.Models
 
         [Display(Name ="Invitation Date")]
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime InvitationDate { get; set; }
 
         public virtual Job Job { get; set; }

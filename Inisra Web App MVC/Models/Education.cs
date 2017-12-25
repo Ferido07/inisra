@@ -7,7 +7,7 @@ namespace Inisra_Web_App_MVC.Models
 {
     public enum EducationType
     {
-        REGULAR, EXTENSION, DISTANCE, ONLINE
+        Regular, Extension, Distance, Online
     }
 
     public class Education

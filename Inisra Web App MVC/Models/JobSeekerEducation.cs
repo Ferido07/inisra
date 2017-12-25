@@ -25,10 +25,12 @@ namespace Inisra_Web_App_MVC.Models
 
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? StartDate { get; set; }
          
         [Display(Name = "Date Completed")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? CompletionDate { get; set; }
 
         //since it is enum no separate table is created for it and it wont be a foreign key

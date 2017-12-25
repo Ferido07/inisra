@@ -9,12 +9,27 @@ using System.Web;
 using System.Web.Mvc;
 using Inisra_Web_App_MVC.DAL;
 using Inisra_Web_App_MVC.Models;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
     public class JobsController : Controller
     {
         private InisraContext db = new InisraContext();
+        private InisraUserManager _userManager;
+
+        public InisraUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<InisraUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: Jobs
         public async Task<ActionResult> Index()
@@ -42,8 +57,13 @@ namespace Inisra_Web_App_MVC.Controllers
         [Authorize(Roles = "Company")]
         public ActionResult Post()
         {
-            ViewBag.CompanyID = new SelectList(db.Companies, "ID", "Name");
-            return View();
+            var companyUser = (CompanyUser)(UserManager.FindByName(User.Identity.Name));
+            var companyID = (int)companyUser.CompanyID;
+            var job = new Job {
+                CompanyID = companyID,
+                Company = db.Companies.Single(c => c.ID == companyID)
+            };
+            return View(job);
         }
 
         // POST: Jobs/Post
@@ -56,16 +76,36 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                //check if the location already Exists
+                try {
+                    var location = db.Locations.Single(l => l.Name == job.Location.Name);
+                    if (location != null)
+                    {
+                        job.LocationID = location.ID;
+                        job.Location = location;
+                    }         
+                }
+                catch(InvalidOperationException IOE)
+                {
+                    //if the inverse of the location specified doesnt exist 
+                    //i.e some other error
+                    //else it would just go out and save the new location
+                    if (!IOE.Message.Equals("Sequence contains no elements"))
+                    {
+                        ModelState.AddModelError("", IOE.Message);
+                        return View(job);
+                    }
+                    db.Locations.Add(job.Location);
+                }
                 db.Jobs.Add(job);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.CompanyID = new SelectList(db.Companies, "ID", "Name", job.CompanyID);
             return View(job);
         }
 
         // GET: Jobs/Edit/5
+        [Authorize(Roles = "Company")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,7 +117,13 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CompanyID = new SelectList(db.Companies, "ID", "Name", job.CompanyID);
+            var companyUser = (CompanyUser)(UserManager.FindByName(User.Identity.Name));
+            if (job.CompanyID != companyUser.CompanyID)
+            {
+                //todo add needed error report that the job is not his to edit 
+                return RedirectToAction("Index");
+            }
+            
             return View(job);
         }
 
@@ -86,19 +132,43 @@ namespace Inisra_Web_App_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Company")]
         public async Task<ActionResult> Edit([Bind(Include = "ID,CompanyID,Title,isOpen,isInvitationOnly,Location,PostDate,ApplicationDeadlineDate,Description")] Job job)
         {
             if (ModelState.IsValid)
             {
+                //check if the location already Exists
+                try
+                {
+                    var location = db.Locations.Single(l => l.Name == job.Location.Name);
+                    if (location != null)
+                    {
+                        job.LocationID = location.ID;
+                        job.Location = location;
+                    }
+                }
+                catch (InvalidOperationException IOE)
+                {
+                    //if the inverse of the location specified doesnt exist 
+                    //i.e some other error
+                    //else it would just go out and save the new location
+                    if (!IOE.Message.Equals("Sequence contains no elements"))
+                    {
+                        ModelState.AddModelError("", IOE.Message);
+                        return View(job);
+                    }
+                    db.Locations.Add(job.Location);
+                }
                 db.Entry(job).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyID = new SelectList(db.Companies, "ID", "Name", job.CompanyID);
+           
             return View(job);
         }
 
         // GET: Jobs/Delete/5
+        [Authorize(Roles = "Company")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -110,12 +180,19 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return HttpNotFound();
             }
+            var companyUser = (CompanyUser)(UserManager.FindByName(User.Identity.Name));
+            if (job.CompanyID != companyUser.CompanyID)
+            {
+                //todo add needed error report that the job is not his to edit 
+                return RedirectToAction("Index");
+            }
             return View(job);
         }
 
         // POST: Jobs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Company")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Job job = await db.Jobs.FindAsync(id);
