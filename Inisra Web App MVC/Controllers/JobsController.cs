@@ -201,6 +201,44 @@ namespace Inisra_Web_App_MVC.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Jobs/Apply/5
+        [Authorize(Roles = "JobSeeker")]
+        public async Task<ActionResult> Apply(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Job job = await db.Jobs.FindAsync(id);
+            if (job == null)
+            {
+                return HttpNotFound();
+            }
+            return View(job);
+            //todo any qualifcation checks(like is the job invitationonly
+            //does the user have enough experience for application set by the company, etc.)
+            //needed for a user to apply should be done here
+            
+        }
+
+        // POST: Jobs/Apply/5
+        [HttpPost, ActionName("Apply")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles ="JobSeeker")]
+        public async Task<ActionResult> ApplyConfirmed(int id)
+        {
+            Job job = await db.Jobs.FindAsync(id);
+            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            var application = new Application()
+            {
+                JobID = job.ID,
+                JobSeekerID = (int)jobSeekerUser.JobSeekerID
+            };
+            db.Applications.Add(application);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -15,7 +15,7 @@ namespace Inisra_Web_App_MVC.Models
         [Display(Name = "Application Date")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime ApplicationDate { get; set; }
+        public DateTime ApplicationDate { get; set; } = DateTime.Now;
 
         public virtual JobSeeker JobSeeker { get; set; }
 
