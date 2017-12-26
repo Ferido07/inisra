@@ -32,9 +32,22 @@ namespace Inisra_Web_App_MVC.Controllers
         }
 
         // GET: Jobs
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string title, string profession)
         {
-            var jobs = db.Jobs.Include(j => j.Company);
+            var jobs = from j in db.Jobs select j;
+
+            if (!String.IsNullOrEmpty(title))
+            {
+                // When you call the Contains  method on an IEnumerable  collection, you get the .NET Framework implementation;
+                // when you call it on an IQueryable  object, you get the database provider implementation.
+                // contains is converted to like on the database which is case insensitive for the entity framework 
+                // provider implementation
+                jobs = jobs.Where(j => j.Title.Contains(title));
+            }
+            if (!String.IsNullOrEmpty(profession))
+                jobs = jobs.Where(j => j.Profession.Contains(profession));
+            //jobs = db.Jobs.Include(j => j.Company);
+            jobs.Include(j => j.Company);
             return View(await jobs.ToListAsync());
         }
 
