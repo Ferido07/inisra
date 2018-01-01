@@ -181,6 +181,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
+    <Compile Include="Controllers\CompanyProfileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\JobSeekersController.cs" />
@@ -319,12 +320,14 @@
     <Content Include="Views\JobSeekers\Details.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\JobSeekers\Index.cshtml" />
-    <Content Include="Views\Profile\DeleteCompany.cshtml" />
+    <Content Include="Views\CompanyProfile\Delete.cshtml" />
     <Content Include="Views\Companies\Details.cshtml" />
-    <Content Include="Views\Profile\EditCompany.cshtml" />
+    <Content Include="Views\CompanyProfile\Edit.cshtml" />
     <Content Include="Views\Companies\Index.cshtml" />
     <Content Include="Views\Profile\Details.cshtml" />
-    <Content Include="Views\Profile\CompanyDetails.cshtml" />
+    <Content Include="Views\CompanyProfile\Details.cshtml" />
+    <Content Include="Views\CompanyProfile\Index.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

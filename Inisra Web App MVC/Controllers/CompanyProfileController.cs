@@ -6,15 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
-    [Authorize(Roles ="JobSeeker")]
-    public class ProfileController : Controller
+    [Authorize(Roles ="Company")]
+    public class CompanyProfileController : Controller
     {
         private InisraContext db = new InisraContext();
         private InisraUserManager _userManager;
@@ -31,88 +30,83 @@ namespace Inisra_Web_App_MVC.Controllers
             }
         }
 
-        // GET: Profile
+        // GET: CompanyProfile
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Profile/Details
+        // GET: CompanyProfile/Details
         public async Task<ActionResult> Details()
         {
-            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            JobSeeker jobSeeker = await db.JobSeekers.FindAsync(jobSeekerUser.JobSeekerID);
+            var compnayUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            Company company = await db.Companies.FindAsync(compnayUser.CompanyID);
             //just in case but almost never happens
-            if (jobSeeker == null)
+            if (company == null)
             {
                 return HttpNotFound();
             }
-            return View(jobSeeker);
+            return View(company);
         }
 
-
-
-        // GET: Profile/Edit
+        // GET: CompanyProfile/Edit
         public async Task<ActionResult> Edit()
         {
-            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            JobSeeker jobSeeker = await db.JobSeekers.FindAsync(jobSeekerUser.JobSeekerID);
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            Company company = await db.Companies.FindAsync(companyUser.CompanyID);
             //just in case but almost never happens
-            if (jobSeeker == null)
+            if (company == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.LocationID = new SelectList(db.Locations, "ID", "Name", jobSeeker.LocationID);
-            return View(jobSeeker);
+            return View(company);
         }
 
-        // POST: Profile/Edit
+        // POST: CompanyProfile/Edit
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "ID,FirstName,LastName,Email,PhoneNo,isFemale,Birthday,LocationID")] JobSeeker jobSeeker)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,Name,Email,PhoneNo,Description")] Company company)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(jobSeeker).State = EntityState.Modified;
+                db.Entry(company).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.LocationID = new SelectList(db.Locations, "ID", "Name", jobSeeker.LocationID);
-            return View(jobSeeker);
+            return View(company);
         }
 
-       
-
         /* todo: delete methods not finished. User manager involvement required and also deleting a user policy not clear
-                
+
         /*
-        // GET: Profile/Delete
+         * 
+        // GET: CompanyProfile/Delete
         public async Task<ActionResult> Delete()
         {
-            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            JobSeeker jobSeeker = await db.JobSeekers.FindAsync(jobSeekerUser.JobSeekerID);
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            Company company = await db.Companies.FindAsync(companyUser.CompanyID);
             //just in case but almost never happens
-            if (jobSeeker == null)
+            if (company == null)
             {
                 return HttpNotFound();
             }
-            return View(jobSeeker);
+            return View(company);
         }
 
-        // POST: Profile/Delete
+        // POST: CompanyProfile/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            JobSeeker jobSeeker = await db.JobSeekers.FindAsync(id);
-            db.JobSeekers.Remove(jobSeeker);
+            Company company = await db.Companies.FindAsync(id);
+            db.Companies.Remove(company);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
         */
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,3 +117,4 @@ namespace Inisra_Web_App_MVC.Controllers
         }
     }
 }
+ 

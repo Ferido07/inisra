@@ -34,7 +34,11 @@ namespace Inisra_Web_App_MVC.Controllers
         // GET: Jobs
         public async Task<ActionResult> Index(string title, string profession)
         {
-            var jobs = from j in db.Jobs select j;
+            var jobs = from j in db.Jobs
+                       where j.isInvitationOnly == false && j.isOpen == true
+                       select j;
+            // this one didnt work maybe try isOpen.CompareTo 
+            //jobs.Where(j => j.isInvitationOnly == false && j.isOpen == true);
 
             if (!String.IsNullOrEmpty(title))
             {
@@ -46,7 +50,7 @@ namespace Inisra_Web_App_MVC.Controllers
             }
             if (!String.IsNullOrEmpty(profession))
                 jobs = jobs.Where(j => j.Profession.Contains(profession));
-            //jobs = db.Jobs.Include(j => j.Company);
+
             jobs.Include(j => j.Company);
             return View(await jobs.ToListAsync());
         }
@@ -232,7 +236,28 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return HttpNotFound();
             }
-            return View(job);
+
+            //check if the user has already applied
+            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            // var application = from a in Application
+            // var application =  db.Applications.Where(a => a.JobSeekerID == jobSeekerUser.JobSeekerID).Where(a => a.JobID == job.ID);
+            try
+            {
+                var application = db.Applications.Single(a => a.JobID == job.ID && a.JobSeekerID == jobSeekerUser.JobSeekerID);
+            }
+            catch (InvalidOperationException IOE)
+            {     
+                if (IOE.Message.Equals("Sequence contains no elements"))
+                {  
+                    return View(job);
+                }
+            }
+           /* if (application == null)
+            {
+                return View(job);
+            }*/
+            //todo how to tell the user that he has already applied.
+            return RedirectToAction("Index");
             //todo any qualifcation checks(like is the job invitationonly
             //does the user have enough experience for application set by the company, etc.)
             //needed for a user to apply should be done here
@@ -247,13 +272,34 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             Job job = await db.Jobs.FindAsync(id);
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            var application = new Application()
+            Application application;
+            try
             {
-                JobID = job.ID,
-                JobSeekerID = (int)jobSeekerUser.JobSeekerID
-            };
-            db.Applications.Add(application);
-            await db.SaveChangesAsync();
+                 application = db.Applications.Single(a => a.JobID == job.ID && a.JobSeekerID == jobSeekerUser.JobSeekerID);
+            }
+            catch (InvalidOperationException IOE)
+            {
+                //if there is no application for the current job and jobSeeker add a new one
+                if (IOE.Message.Equals("Sequence contains no elements"))
+                {
+                    application = new Application()
+                    {
+                        JobID = job.ID,
+                        JobSeekerID = (int)jobSeekerUser.JobSeekerID
+                    };
+                    db.Applications.Add(application);
+                    await db.SaveChangesAsync();
+                }
+            }
+            /*if (application == null) { 
+                application = new Application()
+                {
+                    JobID = job.ID,
+                    JobSeekerID = (int)jobSeekerUser.JobSeekerID
+                };
+            }*/
+            
+            
             return RedirectToAction("Index");
         }
 
