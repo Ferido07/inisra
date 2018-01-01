@@ -63,14 +63,19 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return HttpNotFound();
             }
+            if (User.IsInRole("Company"))
+            {
+                var companyUser=(CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+                ViewBag.IsOwner = (job.CompanyID == companyUser.CompanyID) ? true : false;
+            }
             return View(job);
         }
 
         // GET: Jobs/Post
         [Authorize(Roles = "Company")]
-        public ActionResult Post()
+        public async Task<ActionResult> Post()
         {
-            var companyUser = (CompanyUser)(UserManager.FindByName(User.Identity.Name));
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             var companyID = (int)companyUser.CompanyID;
             var job = new Job {
                 CompanyID = companyID,
@@ -85,7 +90,7 @@ namespace Inisra_Web_App_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Company")]
-        public async Task<ActionResult> Post([Bind(Include = "ID,CompanyID,Title,isOpen,isInvitationOnly,Location,PostDate,ApplicationDeadlineDate,Description")] Job job)
+        public async Task<ActionResult> Post([Bind(Include = "CompanyID,Title,Profession,Salary,SalaryRate,isOpen,isInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job)
         {
             if (ModelState.IsValid)
             {
@@ -130,7 +135,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return HttpNotFound();
             }
-            var companyUser = (CompanyUser)(UserManager.FindByName(User.Identity.Name));
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             if (job.CompanyID != companyUser.CompanyID)
             {
                 //todo add needed error report that the job is not his to edit 
@@ -146,7 +151,7 @@ namespace Inisra_Web_App_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Company")]
-        public async Task<ActionResult> Edit([Bind(Include = "ID,CompanyID,Title,isOpen,isInvitationOnly,Location,PostDate,ApplicationDeadlineDate,Description")] Job job)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,CompanyID,Title,Profession,Salary,SalaryRate,isOpen,isInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job)
         {
             if (ModelState.IsValid)
             {
@@ -193,7 +198,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return HttpNotFound();
             }
-            var companyUser = (CompanyUser)(UserManager.FindByName(User.Identity.Name));
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             if (job.CompanyID != companyUser.CompanyID)
             {
                 //todo add needed error report that the job is not his to edit 

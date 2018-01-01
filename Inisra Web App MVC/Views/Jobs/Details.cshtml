@@ -27,21 +27,52 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.isOpen)
+            @Html.DisplayNameFor(model => model.Profession)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.isOpen)
+            @Html.DisplayFor(model => model.Profession)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.isInvitationOnly)
+            @Html.DisplayNameFor(model => model.Salary)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.isInvitationOnly)
+            @Html.DisplayFor(model => model.Salary)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.SalaryCurrency)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SalaryCurrency)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SalaryRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SalaryRate)
+        </dd>
+
+        @if (ViewBag.IsOwner ?? false)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.isOpen)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.isOpen)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.isInvitationOnly)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.isInvitationOnly)
+            </dd>
+
+        }
         <dt>
             @Html.DisplayNameFor(model => model.Location)
         </dt>
@@ -77,6 +108,18 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+   @if (!User.IsInRole("Company"))
+   {
+       @Html.ActionLink("Apply", "Apply", new { id = Model.ID })
+       <label> | </label>
+   } 
+   
+   @if (ViewBag.IsOwner?? false)
+   {
+       @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+       <label> | </label>
+       @Html.ActionLink("Delete", "Delete", new { id = Model.ID })
+       <label> | </label>
+   }
+       @Html.ActionLink("Back to List", "Index")
 </p>

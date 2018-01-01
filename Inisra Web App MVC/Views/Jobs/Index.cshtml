@@ -7,7 +7,10 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Post New", "Post")
+    @if (User.IsInRole("Company"))
+    {
+        @Html.ActionLink("Post New", "Post")
+    }   
 </p>
 
 @using (@Html.BeginForm("Index", "Jobs", FormMethod.Get))
@@ -39,10 +42,7 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.isOpen)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isInvitationOnly)
+            @Html.DisplayNameFor(model => model.Profession)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Location)
@@ -53,9 +53,7 @@
         <th>
             @Html.DisplayNameFor(model => model.ApplicationDeadlineDate)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
+
         <th></th>
     </tr>
 
@@ -68,10 +66,7 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.isOpen)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isInvitationOnly)
+            @Html.DisplayFor(modelItem => item.Profession)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Location.Name)
@@ -83,13 +78,13 @@
             @Html.DisplayFor(modelItem => item.ApplicationDeadlineDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Apply","Apply", new { id=item.ID }) |
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Details", "Details", new { id = item.ID }) 
+
+            @if (!User.IsInRole("Company"))
+            {
+                <label> | </label>
+                @Html.ActionLink("Apply", "Apply", new { id = item.ID })
+            }
         </td>
     </tr>
 }
