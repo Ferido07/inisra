@@ -233,6 +233,7 @@
     <Compile Include="Models\Institution.cs" />
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\CompanyJobsViewModel.cs" />
     <Compile Include="Models\JobSeekerEducation.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -328,6 +329,10 @@
     <Content Include="Views\CompanyProfile\Details.cshtml" />
     <Content Include="Views\CompanyProfile\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\Applications.cshtml" />
+    <Content Include="Views\Profile\DeleteApplication.cshtml" />
+    <Content Include="Views\CompanyProfile\Jobs.cshtml" />
+    <Content Include="Views\CompanyProfile\Applications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

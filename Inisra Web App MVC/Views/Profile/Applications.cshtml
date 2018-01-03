@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Inisra_Web_App_MVC.Models.Application>
+
+@{
+    ViewBag.Title = "Applications";
+}
+
+<h2>Applications</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <table class="table">
+
+        <tr>
+            <th>Company </th>
+            <th>Job Title</th>
+            <th>Profession</th>
+            <th>Application Date</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Job.Company.Name, "Details", "Companies", new { id = item.Job.CompanyID }, new { })
+                </td>
+                <td>
+                    @Html.ActionLink(item.Job.Title, "Details", "Jobs", new { id = item.JobID }, new { })
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Job.Profession)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.ApplicationDate)
+                </td>
+                <td>
+                    <!--<input type="submit" value="Delete" class="btn btn-danger" formmethod="post" formaction="DeleteApplication" />-->
+                    <button type="submit" name="jobID" value="@item.JobID" class="btn btn-danger" formaction="DeleteApplication" formmethod="post">Delete</button>
+                    @Html.ActionLink("Delete", "DeleteApplication", new { jobId = item.JobID })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+<p>
+    @Html.ActionLink("Back to Profile", "Index")
+</p>

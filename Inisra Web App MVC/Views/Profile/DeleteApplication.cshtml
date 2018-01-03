@@ -1,0 +1,109 @@
+﻿@model Inisra_Web_App_MVC.Models.Application
+
+@{
+    ViewBag.Title = "DeleteApplication";
+}
+
+<h2>DeleteApplication</h2>
+<h3> Are you sure you want to delete this job application?</h3>
+<div>
+    <h4>Job</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.Company.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.Company.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.Location.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.Location.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.Profession)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.Profession)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.Salary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.Salary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.SalaryCurrency)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.SalaryCurrency)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.SalaryRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.SalaryRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.PostDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.PostDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.ApplicationDeadlineDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.ApplicationDeadlineDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationDate)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    }
+    @Html.ActionLink("Back to Applications", "Applications")
+</div>

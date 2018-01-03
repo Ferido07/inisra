@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -106,6 +107,32 @@ namespace Inisra_Web_App_MVC.Controllers
             return RedirectToAction("Index");
         }
         */
+        public async Task<ActionResult> Jobs(string title)
+        {
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            var jobs = db.Jobs.Where(j => j.CompanyID == companyUser.CompanyID).Include(l => l.Location);
+            if (!String.IsNullOrEmpty(title))
+                jobs = jobs.Where(j => j.Title.Contains(title));       
+            return View(await jobs.ToListAsync());
+        } 
+
+        public async Task<ActionResult> Applications(int? jobID)
+        {
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            IQueryable<Application> applications;
+
+            if (jobID == null)
+            {
+                applications = db.Applications.Where(a => a.Job.CompanyID == companyUser.CompanyID)
+                    .Include(a => a.Job).Include(a => a.JobSeeker);
+                //applications.GroupBy(a => a.Job.Title);
+            }
+            else
+                applications = db.Applications.Where(a => a.JobID == jobID)
+                    .Include(a => a.Job).Include(a => a.JobSeeker);
+
+            return View(await applications.ToListAsync());
+        }
 
         protected override void Dispose(bool disposing)
         {

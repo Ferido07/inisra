@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Inisra_Web_App_MVC.Models.Job>
+
+@{
+    ViewBag.Title = "Jobs";
+}
+
+<h2>Jobs</h2>
+
+<p>
+    @Html.ActionLink("Post Job", "Post", "Jobs")
+</p>
+
+@using (@Html.BeginForm("Jobs", "CompanyProfile", FormMethod.Get))
+{
+    <p class="form-inline">
+        <label for="titleTB" class="control-label">Job Title:</label>
+        @Html.TextBox("Title", "", htmlAttributes: new { @id = "titleTB", @class = "form-group form-control" })      
+        <input type="submit" value="Search" class="btn btn-default" />
+    </p>
+}
+<table class="table">
+    <tr>
+         
+        <th>
+           @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Profession)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PostDate)
+        </th>
+        <th>
+           @Html.DisplayNameFor(model => model.ApplicationDeadlineDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Profession)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicationDeadlineDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "Jobs", new { id=item.ID }, new { }) |
+            @Html.ActionLink("Details", "Details", "Jobs", new { id=item.ID }, new { }) |
+            @Html.ActionLink("Delete", "Delete", "Jobs", new { id=item.ID }, new { }) |
+            @Html.ActionLink("Applications","Applications", new { jobID = item.ID })
+        </td>
+    </tr>
+}
+</table>

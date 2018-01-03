@@ -239,23 +239,11 @@ namespace Inisra_Web_App_MVC.Controllers
 
             //check if the user has already applied
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            // var application = from a in Application
-            // var application =  db.Applications.Where(a => a.JobSeekerID == jobSeekerUser.JobSeekerID).Where(a => a.JobID == job.ID);
-            try
-            {
-                var application = db.Applications.Single(a => a.JobID == job.ID && a.JobSeekerID == jobSeekerUser.JobSeekerID);
-            }
-            catch (InvalidOperationException IOE)
-            {     
-                if (IOE.Message.Equals("Sequence contains no elements"))
-                {  
-                    return View(job);
-                }
-            }
-           /* if (application == null)
+            var application = await db.Applications.FindAsync(jobSeekerUser.JobSeekerID, job.ID);
+            if (application == null)
             {
                 return View(job);
-            }*/
+            }
             //todo how to tell the user that he has already applied.
             return RedirectToAction("Index");
             //todo any qualifcation checks(like is the job invitationonly
@@ -273,31 +261,16 @@ namespace Inisra_Web_App_MVC.Controllers
             Job job = await db.Jobs.FindAsync(id);
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             Application application;
-            try
-            {
-                 application = db.Applications.Single(a => a.JobID == job.ID && a.JobSeekerID == jobSeekerUser.JobSeekerID);
-            }
-            catch (InvalidOperationException IOE)
-            {
-                //if there is no application for the current job and jobSeeker add a new one
-                if (IOE.Message.Equals("Sequence contains no elements"))
-                {
-                    application = new Application()
-                    {
-                        JobID = job.ID,
-                        JobSeekerID = (int)jobSeekerUser.JobSeekerID
-                    };
-                    db.Applications.Add(application);
-                    await db.SaveChangesAsync();
-                }
-            }
-            /*if (application == null) { 
+            application = await db.Applications.FindAsync(jobSeekerUser.JobSeekerID, job.ID);
+            if (application == null) { 
                 application = new Application()
                 {
                     JobID = job.ID,
                     JobSeekerID = (int)jobSeekerUser.JobSeekerID
                 };
-            }*/
+                db.Applications.Add(application);
+                await db.SaveChangesAsync();
+            }
             
             
             return RedirectToAction("Index");
