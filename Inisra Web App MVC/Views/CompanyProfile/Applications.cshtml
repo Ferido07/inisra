@@ -27,10 +27,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Job.Title)
+            @Html.ActionLink(item.Job.Title,"Details", "Jobs", new { id = item.JobID }, new { }  )
         </td>
         <td>
-            @Html.ActionLink(item.JobSeeker.FullName,"Details","JobSeekers",new { id = item.JobSeekerID },new { } )
+            @Html.ActionLink(item.JobSeeker.FullName, "Details", "JobSeekers", new { id = item.JobSeekerID }, new { } )
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.JobSeeker.Email)

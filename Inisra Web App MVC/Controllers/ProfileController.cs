@@ -124,32 +124,10 @@ namespace Inisra_Web_App_MVC.Controllers
             return View(await applications.ToListAsync());
         }
 
-        //GET: Profile/DeleteApplication/5
-        public async Task<ActionResult> DeleteApplication(int? jobID)
-        {
-            if (jobID == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Job job = await db.Jobs.FindAsync(jobID);
-            if (job == null)
-            {
-                return HttpNotFound();
-            }
-            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-
-            try {
-                var application = db.Applications.Single(a => a.JobSeekerID == jobSeekerUser.JobSeekerID && a.JobID == job.ID);
-                return View(application);
-            }
-            catch (Exception) { }
-            return RedirectToAction("Applications");
-        }
-
         //POST: Profile/DeleteApplication/5
-        [HttpPost, ActionName("DeleteApplication")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteApplicationConfirmed (int jobID)
+        public async Task<ActionResult> DeleteApplication (int jobID)
         {
             Job job = await db.Jobs.FindAsync(jobID);
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
