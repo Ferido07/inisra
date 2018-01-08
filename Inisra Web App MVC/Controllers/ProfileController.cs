@@ -120,7 +120,7 @@ namespace Inisra_Web_App_MVC.Controllers
             var applications = from a in db.Applications
                                where a.JobSeekerID == jobSeekerUser.JobSeekerID
                                select a;
-            applications.Include(a => a.Job.Company);
+            applications.Include(a => a.Job).Include(a => a.Job.Company);
             return View(await applications.ToListAsync());
         }
 
@@ -142,6 +142,17 @@ namespace Inisra_Web_App_MVC.Controllers
             return RedirectToAction("Applications");
         }
 
+        //GET: Profile/Invitations
+        public async Task<ActionResult> Invitations()
+        {
+            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+
+            var invitations = from i in db.Invitations
+                              where i.JobSeekerID == jobSeekerUser.JobSeekerID
+                              select i;
+            invitations.Include(i => i.Job).Include(i => i.Job.Company);
+            return View(await invitations.ToListAsync());
+        }
 
 
         protected override void Dispose(bool disposing)

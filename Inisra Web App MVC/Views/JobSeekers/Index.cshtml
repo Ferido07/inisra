@@ -56,7 +56,12 @@
             @Html.DisplayFor(modelItem => item.Birthday)
         </td>
         <td>           
-            @Html.ActionLink("Details", "Details", new { id=item.ID })         
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) 
+            @if (User.IsInRole("Company"))
+            {
+                <label> | </label>
+                @Html.ActionLink("Invite to Job", "Invite", "CompanyProfile", new { jobSeekerID = item.ID }, new { })
+            }
         </td>
     </tr>
 }

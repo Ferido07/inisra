@@ -61,7 +61,8 @@
             @Html.ActionLink("Edit", "Edit", "Jobs", new { id=item.ID }, new { }) |
             @Html.ActionLink("Details", "Details", "Jobs", new { id=item.ID }, new { }) |
             @Html.ActionLink("Delete", "Delete", "Jobs", new { id=item.ID }, new { }) |
-            @Html.ActionLink("Applications","Applications", new { jobID = item.ID })
+            @Html.ActionLink("Applications","Applications", new { jobID = item.ID }) |
+            @Html.ActionLink("Invite", "Invite", new { jobID = item.ID })
         </td>
     </tr>
 }

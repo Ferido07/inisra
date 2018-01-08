@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
-    [Authorize(Roles ="Company")]
+    [Authorize(Roles = "Company")]
     public class CompanyProfileController : Controller
     {
         private InisraContext db = new InisraContext();
@@ -107,15 +107,18 @@ namespace Inisra_Web_App_MVC.Controllers
             return RedirectToAction("Index");
         }
         */
+
+        //GET: CompanyProfile/Jobs?title=Manager
         public async Task<ActionResult> Jobs(string title)
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             var jobs = db.Jobs.Where(j => j.CompanyID == companyUser.CompanyID).Include(l => l.Location);
             if (!String.IsNullOrEmpty(title))
-                jobs = jobs.Where(j => j.Title.Contains(title));       
+                jobs = jobs.Where(j => j.Title.Contains(title));
             return View(await jobs.ToListAsync());
-        } 
+        }
 
+        //GET: CompanyProfile/Applications?jobID=5
         public async Task<ActionResult> Applications(int? jobID)
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
@@ -134,6 +137,138 @@ namespace Inisra_Web_App_MVC.Controllers
             return View(await applications.ToListAsync());
         }
 
+        //GET: CompanyProfile/Invite
+        public async Task<ActionResult> Invite(int? jobID, int? jobSeekerID)
+        {
+            //when both are null       
+            if ((jobID == null) && (Session["JobID"] == null))
+            {
+                return RedirectToAction("Jobs");
+            }
+            //either one of them not null
+            else
+            {
+                //if jobID is not null save it in session or update the existing one in session(i.e update when both have value)
+                if (jobID != null)
+                    Session["JobID"] = jobID;
+                //can be removed but the invitaion object must be initialized with the data from session if removed
+                else
+                    jobID = (int)Session["JobID"];
+            }
+            //same steps as above
+            if ((jobSeekerID == null) && (Session["JobSeekerID"] == null))
+            {
+                return RedirectToAction("Index", "JobSeekers");
+            }
+            else
+            {
+                if (jobSeekerID != null)
+                    Session["JobSeekerID"] = jobSeekerID;
+                //can be removed but the invitaion object must be initialized with the data from session if removed
+                else
+                    jobSeekerID = (int)Session["JobSeekerID"];
+            }
+
+            var compnayUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+
+
+            var job = db.Jobs.Where(j => j.CompanyID == compnayUser.CompanyID && j.ID == jobID).Single();
+            var jobSeeker = await db.JobSeekers.FindAsync(jobSeekerID);
+
+            if (job == null || jobSeeker == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                Invitation invitation = await db.Invitations.FindAsync(job.ID, jobSeeker.ID);
+                if (invitation == null)
+                {
+                    invitation = new Invitation()
+                    {
+                        JobID = (int)jobID,
+                        JobSeekerID = (int)jobSeekerID,
+                        Job = job,
+                        JobSeeker = jobSeeker
+                    };
+                    return View(invitation);
+                }
+
+                //todo tell company user that the job seeeker is already invited to the job
+                //clear session data since already invited
+                Session["JobID"] = null;
+                Session["JobSeekerID"] = null;
+                return RedirectToAction("Invitations");
+            }
+        }
+
+        //POST: CompanyProfile/Invite
+        [HttpPost, ActionName("Invite")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> InviteConfirmed()
+        {
+            //means already invited maybe through another tab or sometime before and since the invitation exists 
+            //the session data cleared or some server error happened
+            if ((Session["JobID"] == null) || (Session["JobSeekerID"] == null))
+            {
+                return RedirectToAction("Invitations");
+                //return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+
+            int jobID = (int)Session["JobID"];
+            int jobSeekerID = (int)Session["JobSeekerID"];
+
+            Invitation invitation = new Invitation()
+            {
+                JobID = jobID,
+                JobSeekerID = jobSeekerID,
+            };
+
+            db.Invitations.Add(invitation);
+            await db.SaveChangesAsync();
+
+            //clear the data since succesfully added invitation
+            Session["JobID"] = null;
+            Session["JobSeekerID"] = null;
+
+            return RedirectToAction("Invitations");
+        }
+
+        //GET: CompanyProfile/Invitations
+        public async Task<ActionResult> Invitations()
+        {
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+
+            var invitations = from i in db.Invitations
+                              where i.Job.CompanyID == companyUser.CompanyID
+                              select i;
+            invitations.Include(i => i.Job).Include(i => i.JobSeeker);
+            return View(await invitations.ToListAsync());
+        }
+
+        //POST: CompanyProfile/Invitations/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteInvitation(int jobID, int jobSeekerID)
+        {
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            Job job = await db.Jobs.FindAsync(jobID);
+            JobSeeker jobSeeker = await db.JobSeekers.FindAsync(jobSeekerID);
+
+            if ((job == null) || (jobSeeker == null) || (job.CompanyID != companyUser.CompanyID) )
+                return HttpNotFound();
+    
+            try
+            {
+                var invitation = db.Invitations.Single(i => i.JobID == job.ID && i.JobSeekerID == jobSeekerID);
+                db.Invitations.Remove(invitation);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception) { }
+
+            return RedirectToAction("Invitations");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -144,4 +279,3 @@ namespace Inisra_Web_App_MVC.Controllers
         }
     }
 }
- 

@@ -331,6 +331,9 @@
     <Content Include="Views\Profile\Applications.cshtml" />
     <Content Include="Views\CompanyProfile\Jobs.cshtml" />
     <Content Include="Views\CompanyProfile\Applications.cshtml" />
+    <Content Include="Views\CompanyProfile\Invite.cshtml" />
+    <Content Include="Views\Profile\Invitations.cshtml" />
+    <Content Include="Views\CompanyProfile\Invitations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

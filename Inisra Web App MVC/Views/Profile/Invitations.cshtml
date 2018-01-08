@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Inisra_Web_App_MVC.Models.Invitation>
+
+@{
+    ViewBag.Title = "Invitations";
+}
+
+<h2>Invitations</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <table class="table">
+
+        <tr>
+            <th>Company </th>
+            <th>Job Title</th>
+            <th>Profession</th>
+            <th>Invitation Date</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Job.Company.Name, "Details", "Companies", new { id = item.Job.CompanyID }, new { })
+                </td>
+                <td>
+                    @Html.ActionLink(item.Job.Title, "Details", "Jobs", new { id = item.JobID }, new { })
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.Job.Profession)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.InvitationDate)
+                </td>
+                <td>
+                    <button type="submit" name="" value="@item.JobID" class="btn btn-primary" formaction="" formmethod="post">Accept</button>
+                    <button type="submit" name="" value="@item.JobID" class="btn btn-danger" formaction="" formmethod="post">Reject</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+<p>
+    @Html.ActionLink("Back to Profile", "Index")
+</p>
+

@@ -69,5 +69,10 @@
     </dl>
 </div>
 <p>
+    @if (User.IsInRole("Company"))
+    {
+        <label> | </label>
+        @Html.ActionLink("Invite to Job", "Invite", "CompanyProfile", new { jobSeekerID = Model.ID }, new { })
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>

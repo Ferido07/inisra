@@ -12,10 +12,10 @@ namespace Inisra_Web_App_MVC.Models
         
         public int JobSeekerID { get; set; }
 
-        [Display(Name ="Invitation Date")]
+        [Display(Name = "Invitation Date")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime InvitationDate { get; set; }
+        public DateTime InvitationDate { get; set; } = DateTime.Now;
 
         public virtual Job Job { get; set; }
 
