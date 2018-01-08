@@ -43,5 +43,7 @@
 
         <input type="submit" class="btn btn-default" value="Invite" />
     }
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Job Seekers", "Index", "JobSeekers") |
+    @Html.ActionLink("Back to Jobs", "Jobs") |
+    @Html.ActionLink("Abort Inviting", "Invite", new { cancel = true })
 </p>

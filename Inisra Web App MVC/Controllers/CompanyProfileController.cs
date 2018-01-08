@@ -138,39 +138,39 @@ namespace Inisra_Web_App_MVC.Controllers
         }
 
         //GET: CompanyProfile/Invite
-        public async Task<ActionResult> Invite(int? jobID, int? jobSeekerID)
+        public async Task<ActionResult> Invite(int? jobID, int? jobSeekerID, bool? cancel)
         {
+            //abort inviting hence clear data   
+            if (cancel == true)
+            {
+                Session["JobID"] = Session["JobSeekerID"] = null;
+                return RedirectToAction("Invitations");
+            }
+            //if jobID or jobSeekerID is not null save it in session or update the existing one in session(i.e update when both have value)
+            if (jobID != null)
+                Session["JobID"] = jobID;
+            if (jobSeekerID != null)
+                Session["JobSeekerID"] = jobSeekerID;
+
             //when both are null       
             if ((jobID == null) && (Session["JobID"] == null))
             {
                 return RedirectToAction("Jobs");
             }
-            //either one of them not null
-            else
-            {
-                //if jobID is not null save it in session or update the existing one in session(i.e update when both have value)
-                if (jobID != null)
-                    Session["JobID"] = jobID;
-                //can be removed but the invitaion object must be initialized with the data from session if removed
-                else
-                    jobID = (int)Session["JobID"];
-            }
-            //same steps as above
+            //same as above
             if ((jobSeekerID == null) && (Session["JobSeekerID"] == null))
             {
                 return RedirectToAction("Index", "JobSeekers");
             }
-            else
-            {
-                if (jobSeekerID != null)
-                    Session["JobSeekerID"] = jobSeekerID;
-                //can be removed but the invitaion object must be initialized with the data from session if removed
-                else
-                    jobSeekerID = (int)Session["JobSeekerID"];
-            }
 
             var compnayUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-
+            
+            //assigning stored value from previous request with jobID or jobSeekerID or the same request
+            //so that these variables can be used intead of session object 
+            //can be removed but the invitaion object must be initialized with the data from session if removed
+            //and the queries must also be changed to corresponding session object
+            jobID = (int)Session["JobID"];
+            jobSeekerID = (int)Session["JobSeekerID"];
 
             var job = db.Jobs.Where(j => j.CompanyID == compnayUser.CompanyID && j.ID == jobID).Single();
             var jobSeeker = await db.JobSeekers.FindAsync(jobSeekerID);
@@ -196,8 +196,7 @@ namespace Inisra_Web_App_MVC.Controllers
 
                 //todo tell company user that the job seeeker is already invited to the job
                 //clear session data since already invited
-                Session["JobID"] = null;
-                Session["JobSeekerID"] = null;
+                Session["JobID"] = Session["JobSeekerID"] = null;
                 return RedirectToAction("Invitations");
             }
         }
@@ -228,8 +227,7 @@ namespace Inisra_Web_App_MVC.Controllers
             await db.SaveChangesAsync();
 
             //clear the data since succesfully added invitation
-            Session["JobID"] = null;
-            Session["JobSeekerID"] = null;
+            Session["JobID"] = Session["JobSeekerID"] = null;
 
             return RedirectToAction("Invitations");
         }
