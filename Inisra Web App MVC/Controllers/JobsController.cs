@@ -35,10 +35,10 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Index(string title, string profession)
         {
             var jobs = from j in db.Jobs
-                       where j.isInvitationOnly == false && j.isOpen == true
+                       where j.IsInvitationOnly == false && j.IsOpen == true
                        select j;
-            // this one didnt work maybe try isOpen.CompareTo 
-            //jobs.Where(j => j.isInvitationOnly == false && j.isOpen == true);
+            // this one didnt work maybe try IsOpen.CompareTo 
+            //jobs.Where(j => j.IsInvitationOnly == false && j.IsOpen == true);
 
             if (!String.IsNullOrEmpty(title))
             {
@@ -94,7 +94,7 @@ namespace Inisra_Web_App_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Company")]
-        public async Task<ActionResult> Post([Bind(Include = "CompanyID,Title,Profession,Salary,SalaryRate,isOpen,isInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job)
+        public async Task<ActionResult> Post([Bind(Include = "CompanyID,Title,Profession,Salary,SalaryRate,IsOpen,IsInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job)
         {
             if (ModelState.IsValid)
             {
@@ -155,7 +155,7 @@ namespace Inisra_Web_App_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Company")]
-        public async Task<ActionResult> Edit([Bind(Include = "ID,CompanyID,Title,Profession,Salary,SalaryRate,isOpen,isInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,CompanyID,Title,Profession,Salary,SalaryRate,IsOpen,IsInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job)
         {
             if (ModelState.IsValid)
             {

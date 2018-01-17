@@ -27,7 +27,7 @@ namespace Inisra_Web_App_MVC.Migrations
                     FirstName = "Ferid",
                     LastName = "Zuber",
                     Email = "feridyz@gmail.com",
-                    isFemale = false,
+                    IsFemale = false,
                     PhoneNo = 0910636418,
                     Birthday = new DateTime(1994,12,7)
                 },
@@ -35,7 +35,7 @@ namespace Inisra_Web_App_MVC.Migrations
                     FirstName ="Abenezer",
                     LastName = "Genanaw",
                     Email = "abenezergenanaw@gmail.com",
-                    isFemale = false,
+                    IsFemale = false,
                     PhoneNo = 0910116107
                 },
                 new JobSeeker
@@ -43,7 +43,7 @@ namespace Inisra_Web_App_MVC.Migrations
                     FirstName = "Fisseha",
                     LastName = "Araya",
                     Email = "Fisseharaya@gmail.com",
-                    isFemale = false,
+                    IsFemale = false,
                     PhoneNo = 0920953186
                 },
                 new JobSeeker
@@ -51,7 +51,7 @@ namespace Inisra_Web_App_MVC.Migrations
                     FirstName = "Fesseha",
                     LastName = "Tilahun",
                     Email = "fishtilahun73@gmail.com",
-                    isFemale = false,
+                    IsFemale = false,
                     PhoneNo = 0913206083,
                     Birthday = new DateTime(1994,12,27)
                 },
@@ -61,11 +61,11 @@ namespace Inisra_Web_App_MVC.Migrations
                     LastName = "Tibebu",
                     Email = "tibebualazar@gmail.com",
                     PhoneNo = 0910493825,
-                    isFemale = false 
+                    IsFemale = false
                 }
 
             };
-            JobSeekers.ForEach(js => context.JobSeekers.AddOrUpdate(property => property.Email, js));
+            JobSeekers.ForEach(js => context.JobSeekers.AddOrUpdate(property => property.ID, js));
             context.SaveChanges();
 
             var JobSeekerUsers = new List<JobSeekerUser>
@@ -107,7 +107,7 @@ namespace Inisra_Web_App_MVC.Migrations
                 }
             };
 
-            JobSeekerUsers.ForEach(jsu => context.Users.AddOrUpdate(js => js.Email, jsu));
+            JobSeekerUsers.ForEach(jsu => context.Users.AddOrUpdate(js => js.Id, jsu));
             context.SaveChanges();
             /*  InisraUserManager UserManager = new InisraUserManager.c;
               var result = UserManager.Create(JobSeekerUsers.ElementAtOrDefault<JobSeekerUser>(0), "");
@@ -137,7 +137,7 @@ namespace Inisra_Web_App_MVC.Migrations
                     Description = "A fictious company built by the Wayne's residing in Gotham City." 
                 }
             };
-            Companies.ForEach(com => context.Companies.AddOrUpdate(c => c.Email, com));
+            Companies.ForEach(com => context.Companies.AddOrUpdate(c => c.ID, com));
             context.SaveChanges();
 
             var CompanyUsers = new List<CompanyUser>
@@ -165,7 +165,7 @@ namespace Inisra_Web_App_MVC.Migrations
                 }
             };
 
-            CompanyUsers.ForEach(cu => context.Users.AddOrUpdate(c => c.Email, cu));
+            CompanyUsers.ForEach(cu => context.Users.AddOrUpdate(c => c.Id, cu));
             context.SaveChanges();
             //  This method will be called after migrating to the latest version.
 

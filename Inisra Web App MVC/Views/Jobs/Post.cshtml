@@ -60,15 +60,15 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.isInvitationOnly, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IsInvitationOnly, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="row">
                     <div class="col-md-2">
-                        @Html.RadioButtonFor(model => model.isInvitationOnly, false, htmlAttributes: new { @class="", @id = "public", @checked="checked", @text="Public"})
+                        @Html.RadioButtonFor(model => model.IsInvitationOnly, false, htmlAttributes: new { @class="", @id = "public", @checked="checked", @text="Public"})
                         @Html.Label("Public", htmlAttributes: new { @class = "control-label", @for = "public" })
                     </div>
                     <div class="col-md-10">
-                        @Html.RadioButtonFor(model => model.isInvitationOnly, true, htmlAttributes: new { @class = "", @id = "invitationOnly" })
+                        @Html.RadioButtonFor(model => model.IsInvitationOnly, true, htmlAttributes: new { @class = "", @id = "invitationOnly" })
                         @Html.Label("Invitation Only", htmlAttributes: new { @class = "control-label", @for = "invitationOnly" })
                     </div>
                 </div>

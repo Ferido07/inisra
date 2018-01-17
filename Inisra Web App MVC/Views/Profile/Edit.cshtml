@@ -50,11 +50,14 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.isFemale, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IsFemale, "Sex", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.isFemale)
-                    @Html.ValidationMessageFor(model => model.isFemale, "", new { @class = "text-danger" })
+                <div>               
+                    <select class="list-box tri-state form-control" id="IsFemale" name="IsFemale">
+                        <option value="">Not Set</option>
+                        <option value="true">Female</option>
+                        <option value="false">Male</option>
+                    </select>
                 </div>
             </div>
         </div>

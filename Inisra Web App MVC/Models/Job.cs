@@ -36,10 +36,10 @@ namespace Inisra_Web_App_MVC.Models
         public Rate SalaryRate { set; get; }
 
         [Display(Name = "Open for Application")]
-        public bool isOpen { set; get; } = true;
+        public bool IsOpen { set; get; } = true;
 
         [Display(Name = "Privacy")]
-        public bool isInvitationOnly { set; get; } = false;
+        public bool IsInvitationOnly { set; get; } = false;
 
         public int? LocationID { set; get; }
         public virtual Location Location { set; get; }
@@ -49,10 +49,10 @@ namespace Inisra_Web_App_MVC.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime PostDate { set; get; } = DateTime.Now;
 
-        [Display(Name ="Application Deadline")]
+        [Display(Name = "Application Deadline")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime ApplicationDeadlineDate { set; get; }
+        public DateTime ApplicationDeadlineDate { set; get; } = DateTime.Today.AddMonths(1);
 
         [DataType(DataType.MultilineText)]
         public string Description { set; get; }

@@ -71,7 +71,7 @@ namespace Inisra_Web_App_MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "ID,FirstName,LastName,Email,PhoneNo,isFemale,Birthday,LocationID")] JobSeeker jobSeeker)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,FirstName,LastName,Email,PhoneNo,IsFemale,Birthday,LocationID")] JobSeeker jobSeeker)
         {
             if (ModelState.IsValid)
             {

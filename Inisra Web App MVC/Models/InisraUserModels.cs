@@ -39,9 +39,19 @@ namespace Inisra_Web_App_MVC.Models
 
         //todo maybe add additional phonenos or change the one already created to collection and mark one as primary
 
-        [Display(Name = "Sex")]
-        public bool? isFemale { set; get; }
-        
+        public bool? IsFemale { get; set; }
+
+        public string Sex
+        {
+            get
+            {
+                if (IsFemale == null) return "Not Set";
+                if ((bool)IsFemale) return "Female";
+                else return "Male";
+            }
+
+        }
+
         [Display(Name = "Birthday"), DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
