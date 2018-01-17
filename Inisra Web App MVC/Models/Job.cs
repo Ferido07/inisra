@@ -57,6 +57,8 @@ namespace Inisra_Web_App_MVC.Models
         [DataType(DataType.MultilineText)]
         public string Description { set; get; }
 
+        public virtual JobDescription JobDescriptionDocument { get; set; }
+
         public virtual ICollection<Application> Applications { get; set; }
 
         public virtual ICollection<Invitation> Invitations { get; set; }

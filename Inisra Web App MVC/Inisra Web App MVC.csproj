@@ -224,17 +224,22 @@
       <DependentUpon>201712231059524_JobSeekerEducation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201801170928573_ChangedIsFemaleToSex.cs" />
-	<Compile Include="Migrations\201801170928573_ChangedIsFemaleToSex.Designer.cs">
-		<DependentUpon>201801170928573_ChangedIsFemaleToSex.cs</DependentUpon>
-	</Compile>
+    <Compile Include="Migrations\201801170928573_ChangedIsFemaleToSex.Designer.cs">
+      <DependentUpon>201801170928573_ChangedIsFemaleToSex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201801171030248_RenameProperties.cs" />
     <Compile Include="Migrations\201801171030248_RenameProperties.Designer.cs">
       <DependentUpon>201801171030248_RenameProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801171600258_AddedDocuments.cs" />
+    <Compile Include="Migrations\201801171600258_AddedDocuments.Designer.cs">
+      <DependentUpon>201801171600258_AddedDocuments.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\Certificate.cs" />
+    <Compile Include="Models\Document.cs" />
     <Compile Include="Models\Education.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InisraUserModels.cs" />
@@ -377,11 +382,14 @@
     <EmbeddedResource Include="Migrations\201712231059524_JobSeekerEducation.resx">
       <DependentUpon>201712231059524_JobSeekerEducation.cs</DependentUpon>
     </EmbeddedResource>
-	<EmbeddedResource Include="Migrations\201801170928573_ChangedIsFemaleToSex.resx">
+    <EmbeddedResource Include="Migrations\201801170928573_ChangedIsFemaleToSex.resx">
       <DependentUpon>201801170928573_ChangedIsFemaleToSex.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801171030248_RenameProperties.resx">
       <DependentUpon>201801171030248_RenameProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801171600258_AddedDocuments.resx">
+      <DependentUpon>201801171600258_AddedDocuments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
