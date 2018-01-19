@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -62,6 +63,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return HttpNotFound();
             }
+            //todo remove and replace the dropdown for location with textbox
             ViewBag.LocationID = new SelectList(db.Locations, "ID", "Name", jobSeeker.LocationID);
             return View(jobSeeker);
         }
@@ -82,8 +84,28 @@ namespace Inisra_Web_App_MVC.Controllers
             ViewBag.LocationID = new SelectList(db.Locations, "ID", "Name", jobSeeker.LocationID);
             return View(jobSeeker);
         }
+        [HttpPost]
+        public async Task<ActionResult> UploadCV(HttpPostedFileBase file)
+        {
+            if (file != null && file.ContentLength > 0)
+            {
+                var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+                JobSeeker jobSeeker = await db.JobSeekers.FindAsync(jobSeekerUser.JobSeekerID);
 
-       
+                var fileName = Path.GetFileName(file.FileName);
+                //var path = Path.Combine(Server.MapPath("~/Uploads"));
+                MemoryStream ms = new MemoryStream();
+                file.InputStream.CopyTo(ms);
+
+                CV cv = new CV { JobSeekerID = jobSeeker.ID, Document = ms.ToArray() };
+                
+                jobSeeker.CVs.Add(cv);
+                await db.SaveChangesAsync();
+ //               file.SaveAs(path);
+            }
+            return RedirectToAction("Edit");
+        }
+
 
         /* todo: delete methods not finished. User manager involvement required and also deleting a user policy not clear
                 
