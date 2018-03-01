@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<Inisra_Web_App_MVC.Models.Application>
 
+@{ 
+    Layout = "~/Views/Shared/Profile.cshtml";
+}
+
 @{
-    ViewBag.Title = "Applications";
+    ViewBag.Title = "Applications"; ViewBag.Applications = "active";
 }
 
 <h2>Applications</h2>

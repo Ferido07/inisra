@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h2>Profile</h2>
+</div>
+
+<div class="col-md-3">
+    <ul class="nav nav-pills nav-stacked">
+        <li class="@ViewBag.Details"><a href="~/CompanyProfile/Details">Basic</a></li>
+        <li class="@ViewBag.Skills"><a href="#">Jobs</a></li>
+        <li class="@ViewBag.Certificates"><a href="#">Post Job</a></li>
+        <li class="@ViewBag.Educations"><a href="#">Invite</a></li>
+        <li class="@ViewBag.Applications"><a href="~/CompanyProfile/Applications">Applications</a></li>
+        <li class="@ViewBag.Invitations"><a href="~/CompanyProfile/Invitations">Invitations</a></li>
+        <li class="@ViewBag.Jobs"><a href="#">Bookmarked Jobseekers</a></li>
+    </ul>
+</div>
+
+<div class="col-md-9">
+    @RenderBody()
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+@RenderSection("scripts", required: false)

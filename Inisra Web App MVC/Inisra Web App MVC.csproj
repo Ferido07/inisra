@@ -347,6 +347,8 @@
     <Content Include="Views\CompanyProfile\Invite.cshtml" />
     <Content Include="Views\Profile\Invitations.cshtml" />
     <Content Include="Views\CompanyProfile\Invitations.cshtml" />
+    <Content Include="Views\Shared\Profile.cshtml" />
+    <Content Include="Views\Shared\CompanyProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

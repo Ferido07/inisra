@@ -27,6 +27,14 @@
                     <li>@Html.ActionLink("Jobs", "Index", "Jobs")</li>
                     <li>@Html.ActionLink("Companies", "Index", "Companies")</li>
                     <li>@Html.ActionLink("Job Seekers", "Index", "JobSeekers")</li>
+                    @if (User.IsInRole("JobSeeker"))
+                    {
+                        <li>@Html.ActionLink("Profile", "Details", "Profile")</li>
+                    }
+                    @if (User.IsInRole("Company"))
+                    {
+                        <li>@Html.ActionLink("Profile", "Details", "CompanyProfile")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

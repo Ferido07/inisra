@@ -1,6 +1,10 @@
 ﻿@model Inisra_Web_App_MVC.Models.JobSeeker
 
 @{
+    Layout = "~/Views/Shared/Profile.cshtml";
+}
+
+@{
     ViewBag.Title = "Delete";
 }
 
@@ -52,11 +56,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.isFemale)
+            @Html.DisplayNameFor(model => model.Sex)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.isFemale)
+            @Html.DisplayFor(model => model.Sex)
         </dd>
 
         <dt>
