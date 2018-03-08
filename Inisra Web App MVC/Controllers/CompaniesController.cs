@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Inisra_Web_App_MVC.DAL;
 using Inisra_Web_App_MVC.Models;
+using Inisra_Web_App_MVC.Repository;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
@@ -16,10 +11,12 @@ namespace Inisra_Web_App_MVC.Controllers
     {
         private InisraContext db = new InisraContext();
 
+        private CompanyRepository repo = new CompanyRepository();
+
         // GET: Companies
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await db.Companies.ToListAsync());
+            return View(repo.GetCompanies());
         }
 
         // GET: Companies/Details/5
@@ -29,7 +26,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = await db.Companies.FindAsync(id);
+            Company company = await repo.FindCompany(((int)id));
             if (company == null)
             {
                 return HttpNotFound();
@@ -60,15 +57,15 @@ namespace Inisra_Web_App_MVC.Controllers
             return View(company);
         }
         */
-       
 
-        
+
+
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }
