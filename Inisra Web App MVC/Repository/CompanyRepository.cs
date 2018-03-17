@@ -104,6 +104,11 @@ namespace Inisra_Web_App_MVC.Repository
             }
         }
 
+        public Job FindACompanyJob(int companyId, int jobId)
+        {
+            return null;
+        }
+
         internal void Dispose()
         {
             context.Dispose();

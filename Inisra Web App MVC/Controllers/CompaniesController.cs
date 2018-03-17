@@ -14,9 +14,9 @@ namespace Inisra_Web_App_MVC.Controllers
         private CompanyRepository repo = new CompanyRepository();
 
         // GET: Companies
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(repo.GetCompanies());
+            return View(await repo.GetCompanies());
         }
 
         // GET: Companies/Details/5
