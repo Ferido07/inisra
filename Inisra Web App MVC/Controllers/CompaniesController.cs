@@ -3,7 +3,7 @@ using System.Net;
 using System.Web.Mvc;
 using Inisra_Web_App_MVC.DAL;
 using Inisra_Web_App_MVC.Models;
-using Inisra_Web_App_MVC.Repository;
+using Inisra_Web_App_MVC.BLL;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
@@ -11,7 +11,7 @@ namespace Inisra_Web_App_MVC.Controllers
     {
         private InisraContext db = new InisraContext();
 
-        private CompanyRepository repo = new CompanyRepository();
+        private CompanyBLL repo = new CompanyBLL();
 
         // GET: Companies
         public async Task<ActionResult> Index()
@@ -26,7 +26,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = await repo.FindCompany(((int)id));
+            Company company = await repo.GetCompanyById(((int)id));
             if (company == null)
             {
                 return HttpNotFound();

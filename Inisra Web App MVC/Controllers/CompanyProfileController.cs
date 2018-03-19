@@ -1,6 +1,6 @@
 ﻿using Inisra_Web_App_MVC.DAL;
 using Inisra_Web_App_MVC.Models;
-using Inisra_Web_App_MVC.Repository;
+using Inisra_Web_App_MVC.BLL;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
@@ -16,7 +16,7 @@ namespace Inisra_Web_App_MVC.Controllers
     public class CompanyProfileController : Controller
     {
         private InisraContext db = new InisraContext();
-        private CompanyRepository ComRepo = new CompanyRepository();
+        private CompanyBLL ComRepo = new CompanyBLL();
         private InisraUserManager _userManager;
 
         public InisraUserManager UserManager
@@ -41,7 +41,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Details()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            Company company = await ComRepo.FindCompany((int)companyUser.CompanyID);
+            Company company = await ComRepo.GetCompanyById((int)companyUser.CompanyID);
             //just in case but almost never happens
             if (company == null)
             {
@@ -54,7 +54,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Edit()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            Company company = await ComRepo.FindCompany((int)companyUser.CompanyID);
+            Company company = await ComRepo.GetCompanyById((int)companyUser.CompanyID);
             //just in case but almost never happens
             if (company == null)
             {
@@ -71,12 +71,12 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> EditPost()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            var companyToUpdate = await ComRepo.FindCompany((int)companyUser.CompanyID);
+            var companyToUpdate = await ComRepo.GetCompanyById((int)companyUser.CompanyID);
             if(TryUpdateModel(companyToUpdate,"",new string[] { "Name","Email","PhoneNo","Description" }))
             {
                 try
                 {
-                    ComRepo.Update(companyToUpdate);
+                    ComRepo.UpdateCompany(companyToUpdate);
                 }
                 catch (Exception e) { }
             } 
@@ -128,10 +128,10 @@ namespace Inisra_Web_App_MVC.Controllers
 
             if (jobID == null)
             {
-                applications= ComRepo.GetAllApplicationsForCompany((int)companyUser.CompanyID);
+                applications= ComRepo.GetCompanyApplications((int)companyUser.CompanyID);
             }
             else
-                applications = ComRepo.GetJobApplicationsForCompany((int)companyUser.CompanyID, (int)jobID);
+                applications = ComRepo.GetCompanyApplicationsForAJob((int)companyUser.CompanyID, (int)jobID);
 
             return View(applications);
         }
@@ -181,7 +181,7 @@ namespace Inisra_Web_App_MVC.Controllers
             else
             {
                 //checking if the person is already invited to the job
-                Invitation invitation = await ComRepo.FindInvitation(job.ID, jobSeeker.ID);
+                Invitation invitation = await ComRepo.GetInvitation(job.ID, jobSeeker.ID);
                 if (invitation == null)
                 {
                     invitation = new Invitation()
@@ -229,7 +229,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Invitations()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            return View(ComRepo.GetInvitationsOfCompany((int)companyUser.CompanyID));
+            return View(ComRepo.GetCompanyInvitations((int)companyUser.CompanyID));
         }
 
         //POST: CompanyProfile/Invitations/
