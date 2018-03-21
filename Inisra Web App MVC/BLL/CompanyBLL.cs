@@ -12,24 +12,24 @@ namespace Inisra_Web_App_MVC.BLL
     {
         private InisraContext context = new InisraContext();
 
-        public async Task<IEnumerable<Company>> GetCompanies()
+        public async Task<IEnumerable<Company>> GetCompaniesAsync()
         {
             return await context.Companies.ToListAsync();
         }
 
-        public async Task<Company> GetCompanyById(int companyId)
+        public async Task<Company> GetCompanyByIdAsync(int companyId)
         { 
             return await context.Companies.FindAsync(companyId);
         }
 
         //Note: this code could be removed just leave it for now
-        public async Task<IEnumerable<Company>> GetCompaniesByName(string name)
+        public async Task<IEnumerable<Company>> GetCompaniesByNameAsync(string name)
         {
             var company = context.Companies.Where(c => c.Name.Equals(name));
             return await company.ToListAsync();    
         }
 
-        public async Task<IEnumerable<Company>> SearchCompanies(string name, string location)
+        public async Task<IEnumerable<Company>> SearchCompaniesAsync(string name, string location)
         {
             var companies = context.Companies.Include(c => c.Locations);
             //
@@ -45,23 +45,23 @@ namespace Inisra_Web_App_MVC.BLL
         }
 
         //may not be used. that is y it is private so that it is not used by accident before implementing it 
-        private async void AddCompany(Company company)
+        private async void AddCompanyAsync(Company company)
         {
 
         }
 
         //
-        public async void UpdateCompany(Company company)
+        public async Task<bool> UpdateCompanyAsync(Company company)
         {
             //todo: Maybe add a chech if the company exists or not before changing the modified 
             context.Entry(company).State = EntityState.Modified;
             //context.Companies.Update(company); ---> Only available for EFCore implementation
-            await context.SaveChangesAsync();
+            return await context.SaveChangesAsync() == 1? true : false;
             //method return type could be chenged to reflect result of update
         }
         
         //may not be used. that is y it is private so that it is not used by accident before implementing it 
-        private async void DeleteCompany(Company comapany)
+        private async void DeleteCompanyAsync(Company comapany)
         {
 
         }
@@ -103,7 +103,7 @@ namespace Inisra_Web_App_MVC.BLL
             return invitations.ToList();
         }
 
-        public async Task<Invitation> GetInvitation(int jobId, int jobSeekerId)
+        public async Task<Invitation> GetInvitationAsync(int jobId, int jobSeekerId)
         {
             Invitation invitation = await context.Invitations.FindAsync(jobId, jobSeekerId);
             return invitation;
@@ -123,7 +123,7 @@ namespace Inisra_Web_App_MVC.BLL
             return context.SaveChanges();
         }
 
-        public async Task<bool> DeleteInivitation(int jobId, int jobSeekerId)
+        public async Task<bool> DeleteInivitationAsync(int jobId, int jobSeekerId)
         {
             try
             {

@@ -11,12 +11,12 @@ namespace Inisra_Web_App_MVC.Controllers
     {
         private InisraContext db = new InisraContext();
 
-        private CompanyBLL repo = new CompanyBLL();
+        private CompanyBLL comBLL = new CompanyBLL();
 
         // GET: Companies
         public async Task<ActionResult> Index()
         {
-            return View(await repo.GetCompanies());
+            return View(await comBLL.GetCompaniesAsync());
         }
 
         // GET: Companies/Details/5
@@ -26,7 +26,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = await repo.GetCompanyById(((int)id));
+            Company company = await comBLL.GetCompanyByIdAsync(((int)id));
             if (company == null)
             {
                 return HttpNotFound();
@@ -65,7 +65,7 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             if (disposing)
             {
-                repo.Dispose();
+                comBLL.Dispose();
             }
             base.Dispose(disposing);
         }

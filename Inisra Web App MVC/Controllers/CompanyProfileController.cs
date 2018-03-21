@@ -16,7 +16,7 @@ namespace Inisra_Web_App_MVC.Controllers
     public class CompanyProfileController : Controller
     {
         private InisraContext db = new InisraContext();
-        private CompanyBLL ComRepo = new CompanyBLL();
+        private CompanyBLL ComBLL = new CompanyBLL();
         private InisraUserManager _userManager;
 
         public InisraUserManager UserManager
@@ -41,7 +41,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Details()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            Company company = await ComRepo.GetCompanyById((int)companyUser.CompanyID);
+            Company company = await ComBLL.GetCompanyByIdAsync((int)companyUser.CompanyID);
             //just in case but almost never happens
             if (company == null)
             {
@@ -54,7 +54,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Edit()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            Company company = await ComRepo.GetCompanyById((int)companyUser.CompanyID);
+            Company company = await ComBLL.GetCompanyByIdAsync((int)companyUser.CompanyID);
             //just in case but almost never happens
             if (company == null)
             {
@@ -71,12 +71,12 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> EditPost()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            var companyToUpdate = await ComRepo.GetCompanyById((int)companyUser.CompanyID);
+            var companyToUpdate = await ComBLL.GetCompanyByIdAsync((int)companyUser.CompanyID);
             if(TryUpdateModel(companyToUpdate,"",new string[] { "Name","Email","PhoneNo","Description" }))
             {
                 try
                 {
-                    ComRepo.UpdateCompany(companyToUpdate);
+                    await ComBLL.UpdateCompanyAsync(companyToUpdate);
                 }
                 catch (Exception e) { }
             } 
@@ -116,7 +116,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Jobs(string title)
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));  
-            return View(ComRepo.GetCompanyJobs((int)companyUser.CompanyID, title));
+            return View(ComBLL.GetCompanyJobs((int)companyUser.CompanyID, title));
         }
 
         //GET: CompanyProfile/Applications?jobID=5
@@ -128,10 +128,10 @@ namespace Inisra_Web_App_MVC.Controllers
 
             if (jobID == null)
             {
-                applications= ComRepo.GetCompanyApplications((int)companyUser.CompanyID);
+                applications= ComBLL.GetCompanyApplications((int)companyUser.CompanyID);
             }
             else
-                applications = ComRepo.GetCompanyApplicationsForAJob((int)companyUser.CompanyID, (int)jobID);
+                applications = ComBLL.GetCompanyApplicationsForAJob((int)companyUser.CompanyID, (int)jobID);
 
             return View(applications);
         }
@@ -181,7 +181,7 @@ namespace Inisra_Web_App_MVC.Controllers
             else
             {
                 //checking if the person is already invited to the job
-                Invitation invitation = await ComRepo.GetInvitation(job.ID, jobSeeker.ID);
+                Invitation invitation = await ComBLL.GetInvitationAsync(job.ID, jobSeeker.ID);
                 if (invitation == null)
                 {
                     invitation = new Invitation()
@@ -217,7 +217,7 @@ namespace Inisra_Web_App_MVC.Controllers
             int jobID = (int)Session["JobID"];
             int jobSeekerID = (int)Session["JobSeekerID"];
 
-            ComRepo.Invite(jobID, jobSeekerID);
+            ComBLL.Invite(jobID, jobSeekerID);
 
             //clear the data since succesfully added invitation
             Session["JobID"] = Session["JobSeekerID"] = null;
@@ -229,7 +229,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Invitations()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            return View(ComRepo.GetCompanyInvitations((int)companyUser.CompanyID));
+            return View(ComBLL.GetCompanyInvitations((int)companyUser.CompanyID));
         }
 
         //POST: CompanyProfile/Invitations/
@@ -244,7 +244,7 @@ namespace Inisra_Web_App_MVC.Controllers
             if ((job == null) || (jobSeeker == null) || (job.CompanyID != companyUser.CompanyID) )
                 return HttpNotFound();
 
-            await ComRepo.DeleteInivitation(jobID, jobSeekerID);
+            await ComBLL.DeleteInivitationAsync(jobID, jobSeekerID);
 
             return RedirectToAction("Invitations");
         }
