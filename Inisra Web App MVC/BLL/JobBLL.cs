@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Inisra_Web_App_MVC.BLL
 {
-    public class JobBLL
+    public class JobBLL : IDisposable
     {
         private InisraContext context = new InisraContext();
 
@@ -68,7 +68,7 @@ namespace Inisra_Web_App_MVC.BLL
 
         //todo : possible to have postjob, editjob then make addjob and updatejob private but only gives name convention for the respective services 
 
-        public async void AddJob(Job job)
+        public async Task AddJob(Job job)
         {
             if (CheckJobValidity(job)) { 
                 context.Jobs.Add(job);
@@ -76,7 +76,7 @@ namespace Inisra_Web_App_MVC.BLL
             }
         } 
 
-        public async void UpdateJob(Job job)
+        public async Task UpdateJob(Job job)
         {
             if (CheckJobValidity(job)) { 
                 //check if the applications deadline is modified if yes then chck if its later than current date.
@@ -86,7 +86,7 @@ namespace Inisra_Web_App_MVC.BLL
 
         }
 
-        public async void DeleteJob(Job job)
+        public async Task DeleteJob(Job job)
         {
             if (CheckJobValidity(job))
             {
@@ -106,9 +106,21 @@ namespace Inisra_Web_App_MVC.BLL
             return true;
         }
 
-        internal void Dispose()
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
         {
-            context.Dispose();
+            if (!this.disposed)
+            {
+                if (disposing)
+                    context.Dispose();
+                this.disposed = true;
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

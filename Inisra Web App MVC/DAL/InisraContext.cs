@@ -33,6 +33,9 @@ namespace Inisra_Web_App_MVC.DAL
         public DbSet<Institution> Institutions { set; get; }
         public DbSet<JobSeekerEducation> JobSeekerEducations { set; get; }
 
+        //Automatically added when scafolding job for api/jobscontroller and then i modified it to remove the namespaces
+        public DbSet<JobDescription> JobDescriptions { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -76,6 +79,6 @@ namespace Inisra_Web_App_MVC.DAL
                 .ToTable("InstitutionLocations", "dbo"));
         }
 
-       
+        
     }
 }

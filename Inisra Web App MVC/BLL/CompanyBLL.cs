@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Inisra_Web_App_MVC.BLL
 {
-    public class CompanyBLL
+    public class CompanyBLL : IDisposable
     {
         private InisraContext context = new InisraContext();
 
@@ -45,7 +45,7 @@ namespace Inisra_Web_App_MVC.BLL
         }
 
         //may not be used. that is y it is private so that it is not used by accident before implementing it 
-        private async void AddCompanyAsync(Company company)
+        private void AddCompany(Company company)
         {
 
         }
@@ -59,9 +59,9 @@ namespace Inisra_Web_App_MVC.BLL
             return await context.SaveChangesAsync() == 1? true : false;
             //method return type could be chenged to reflect result of update
         }
-        
+
         //may not be used. that is y it is private so that it is not used by accident before implementing it 
-        private async void DeleteCompanyAsync(Company comapany)
+        private void DeleteCompany(Company comapany)
         {
 
         }
@@ -146,11 +146,22 @@ namespace Inisra_Web_App_MVC.BLL
             return null;
         }
 
-        internal void Dispose()
-        {
-            context.Dispose();
-        }
+        private bool disposed = false;
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                    context.Dispose();
+                this.disposed = true;
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
     }
 }

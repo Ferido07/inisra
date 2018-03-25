@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace Inisra_Web_App_MVC.BLL
 {
-    public class JobSeekerBLL
+    public class JobSeekerBLL : IDisposable
     {
         private InisraContext context = new InisraContext();
 
@@ -35,9 +36,9 @@ namespace Inisra_Web_App_MVC.BLL
         }
 
         //Note: may not be used. that is y it is private so that it is not used by accident before implementing it 
-        private async void AddJobSeeker (JobSeeker jobSeeker)
+        private void AddJobSeeker(JobSeeker jobSeeker)
         {
-            
+
         }
 
         public async void UpdateJobSeeker (JobSeeker jobSeeker)
@@ -50,7 +51,7 @@ namespace Inisra_Web_App_MVC.BLL
         }
 
         //Note: may not be used. that is y it is private so that it is not used by accident before implementing it 
-        private async void DeleteJobSeeker (JobSeeker jobSeeker)
+        private void DeleteJobSeeker(JobSeeker jobSeeker)
         {
 
         }
@@ -99,6 +100,22 @@ namespace Inisra_Web_App_MVC.BLL
             }
         }
 
-        
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                    context.Dispose();
+                this.disposed = true;
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
     }
 }
