@@ -193,6 +193,7 @@
   <ItemGroup>
     <Compile Include="Api\JobsController.cs" />
     <Compile Include="Api\SkillsController.cs" />
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="DAL\InisraContext.cs" />
+    <Compile Include="DTOs\JobDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -375,7 +377,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DTOs\" />
     <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>

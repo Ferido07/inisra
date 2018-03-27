@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-
+using AutoMapper.QueryableExtensions;
+using Inisra_Web_App_MVC.DTOs;
 
 namespace Inisra_Web_App_MVC.BLL
 {
@@ -15,10 +16,12 @@ namespace Inisra_Web_App_MVC.BLL
 
         public async Task<Job> GetJobById(int id)
         {
-           return await context.Jobs.FindAsync(id);
+            var job = await context.Jobs.FindAsync(id);
+            //var dto = Mapper.Map<Job, JobDto>(job);
+            return job;
         }
 
-        public async Task<IEnumerable<Job>> GetJobs()
+        public async Task<IEnumerable<JobDto>> GetJobs()
         {
             /*  This could alternatively be used to skip the 5 checks in searchjobs
              *  
@@ -29,20 +32,21 @@ namespace Inisra_Web_App_MVC.BLL
             return await SearchJobs("", "", "", "", null);
         }
 
-        public async Task<IEnumerable<Job>> GetJobsByCompanyId(int companyId)
+        public async Task<IEnumerable<JobDto>> GetJobsByCompanyId(int companyId)
         {
-            var jobs = context.Jobs.Where(j => j.CompanyID == companyId).Include(l => l.Location);
+            var jobs = context.Jobs.Where(j => j.CompanyID == companyId).Include(l => l.Location).ProjectTo<JobDto>();
             return await jobs.ToListAsync();
         }
         //todo: nef gets
         //could do getjobsbylocationid but that is useless. for all practical purpose that is not used only search is used
 
-        public async Task<IEnumerable<Job>> SearchJobs(string title, string profession, string location, string companyName, int? companyId)
+        public async Task<IEnumerable<JobDto>> SearchJobs(string title, string profession, string location, string companyName, int? companyId)
         {
             //
             var jobs = context.Jobs.Include(j => j.Company).Include(j => j.Location);
             jobs = jobs.Where(j => j.IsInvitationOnly == false && j.IsOpen == true && j.ApplicationDeadlineDate.CompareTo(DateTime.Now) == 1);
-
+            
+            //IEnumerable<JobDto> dto = 
             //
             if (!string.IsNullOrEmpty(title))
                 jobs = jobs.Where(j => j.Title.Contains(title));
@@ -61,9 +65,9 @@ namespace Inisra_Web_App_MVC.BLL
 
             //
             if (companyId.HasValue)
-                jobs = jobs.Where(j => j.CompanyID == companyId.Value); 
+                jobs = jobs.Where(j => j.CompanyID == companyId.Value);
 
-            return await jobs.ToListAsync();
+            return await jobs.ProjectTo<JobDto>().ToListAsync();   
         }
 
         //todo : possible to have postjob, editjob then make addjob and updatejob private but only gives name convention for the respective services 

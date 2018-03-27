@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Inisra_Web_App_MVC.Models;
 using Inisra_Web_App_MVC.BLL;
+using Inisra_Web_App_MVC.DTOs;
+using AutoMapper;
 
 namespace Inisra_Web_App_MVC.Api
 {
@@ -20,19 +16,21 @@ namespace Inisra_Web_App_MVC.Api
         private JobBLL jobBLL = new JobBLL();
 
         // GET: api/Jobs
-        public async Task<IEnumerable<Job>> GetJobs()
+        public async Task<IEnumerable<JobDto>> GetJobs()
         {
             return await jobBLL.GetJobs();
+           // IEnumerable<JobDto> dto = Mapper.Map<IEnumerable<Job>,IEnumerable<JobDto>> (jobs);
+            //return dto;
         }
 
         //GET: api/Jobs
-        public async Task<IEnumerable<Job>> GetJobs(string title, string profession, string location, string companyName, int? companyId)
+        public async Task<IEnumerable<JobDto>> GetJobs(string title, string profession, string location = null, string companyName = null, int? companyId = null)
         {
             return await jobBLL.SearchJobs(title, profession, location, companyName, companyId);
         }
 
         // GET: api/Jobs/5
-        [ResponseType(typeof(Job))]
+        [ResponseType(typeof(JobDto))]
         public async Task<IHttpActionResult> GetJob(int id)
         {
             Job job = await jobBLL.GetJobById(id);
@@ -40,8 +38,8 @@ namespace Inisra_Web_App_MVC.Api
             {
                 return NotFound();
             }
-
-            return Ok(job);
+            var dto = Mapper.Map<Job, JobDto>(job);
+            return Ok(dto);
         }
 
         // PUT: api/Jobs/5

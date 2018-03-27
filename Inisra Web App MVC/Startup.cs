@@ -50,6 +50,8 @@ namespace Inisra_Web_App_MVC
                 InisraUserManager.AddToRole(InisraUserManager.FindByName("Ferido07").Id, "Admin");
             }
 
+            AutoMapperConfig.Configure(); 
+
         }
     }
 }
