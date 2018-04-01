@@ -12,13 +12,24 @@ namespace Inisra_Web_App_MVC
     {
         public static void Configure()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Job, JobDto>()
-                .ForMember(dto => dto.Rate, opt => {
-                  opt.MapFrom(job => job.SalaryRate.ToString());
-                  
-                    // opt.ResolveUsing<RateResolver>();
-                }
-                )
+            Mapper.Initialize(cfg =>
+                        {
+                            cfg.CreateMap<Job, JobDto>()
+                                    .ForMember(dto => dto.Rate, opt => opt.MapFrom(job => job.SalaryRate.ToString()));
+
+                        cfg.CreateMap<JobSeeker, JobSeekerDto>()
+                                .ForMember(dto => dto.Sex, opt => opt.MapFrom(js => js.IsFemale.HasValue ? (js.IsFemale.Value ? "Female" : "Male") : ("Not Set") ));
+
+                            cfg.CreateMap<Application, ApplicationDto>()
+                                    .ForMember(dto => dto.JobSeekerFullName, opt => opt.MapFrom(app => app.JobSeeker.FirstName + " " + app.JobSeeker.LastName))
+                                    .ForMember(dto => dto.CompanyName, opt => opt.MapFrom(app => app.Job.Company.Name))
+                                    .ForMember(dto => dto.CompanyId, opt => opt.MapFrom(app => app.Job.CompanyID));
+
+                            cfg.CreateMap<Invitation, InvitationDto>()
+                                    .ForMember(dto => dto.JobSeekerFullName, opt => opt.MapFrom(app => app.JobSeeker.FirstName + " " + app.JobSeeker.LastName))
+                                    .ForMember(dto => dto.CompanyName, opt => opt.MapFrom(inv => inv.Job.Company.Name))
+                                    .ForMember(dto => dto.CompanyId, opt => opt.MapFrom(inv => inv.Job.CompanyID));
+                        }
             );
         }
          

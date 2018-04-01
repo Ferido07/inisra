@@ -5,6 +5,8 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using AutoMapper.QueryableExtensions;
+using Inisra_Web_App_MVC.DTOs;
 
 namespace Inisra_Web_App_MVC.BLL
 {
@@ -12,9 +14,10 @@ namespace Inisra_Web_App_MVC.BLL
     {
         private InisraContext context = new InisraContext();
 
-        public async Task<IEnumerable<JobSeeker>> GetJobSeekers()
+        public async Task<IEnumerable<JobSeekerDto>> GetJobSeekers()
         {
-            return await context.JobSeekers.ToListAsync();
+            var jobSeekers = await context.JobSeekers.ProjectTo<JobSeekerDto>().ToListAsync();
+            return jobSeekers;
         }
 
         //Note: This code could be changed to incorporate navigation properties but probably not needed
@@ -23,7 +26,7 @@ namespace Inisra_Web_App_MVC.BLL
             return await context.JobSeekers.FindAsync(jobSeekerId);
         }
 
-        public async Task<IEnumerable<JobSeeker>> SearchJobSeekers(string name)
+        public async Task<IEnumerable<JobSeekerDto>> SearchJobSeekers(string name)
         {
             var jobSeekers = from js in context.JobSeekers select js;
 
@@ -31,8 +34,8 @@ namespace Inisra_Web_App_MVC.BLL
             {
                 jobSeekers = jobSeekers.Where(j => j.FirstName.Contains(name) || j.LastName.Contains(name));
             }
-
-            return await jobSeekers.ToListAsync();
+            var dto = jobSeekers.ProjectTo<JobSeekerDto>();
+            return await dto.ToListAsync();
         }
 
         //Note: may not be used. that is y it is private so that it is not used by accident before implementing it 
@@ -41,7 +44,7 @@ namespace Inisra_Web_App_MVC.BLL
 
         }
 
-        public async void UpdateJobSeeker (JobSeeker jobSeeker)
+        public async Task UpdateJobSeeker (JobSeeker jobSeeker)
         {
             if (CheckJobSeekerValidity(jobSeeker))
             {
@@ -49,6 +52,7 @@ namespace Inisra_Web_App_MVC.BLL
                 await context.SaveChangesAsync();
             }
         }
+
 
         //Note: may not be used. that is y it is private so that it is not used by accident before implementing it 
         private void DeleteJobSeeker(JobSeeker jobSeeker)
@@ -61,7 +65,7 @@ namespace Inisra_Web_App_MVC.BLL
             return true;
         }
 
-        public async void Apply(int jobSeekerId, int jobId)
+        public async Task Apply(int jobSeekerId, int jobId)
         {
             //todo: check if application already exists and other checks
             var application = new Application { JobSeekerID = jobSeekerId, JobID = jobId };
@@ -69,27 +73,21 @@ namespace Inisra_Web_App_MVC.BLL
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Application>> GetJobSeekerApplications(int jobSeekerId)
+        public async Task<IEnumerable<ApplicationDto>> GetApplications(int jobSeekerId)
         {
             var applications = context.Applications.Where(a => a.JobSeekerID == jobSeekerId).Include(a => a.Job)
-                                .Include(a => a.Job.Company);
+                                .Include(a => a.Job.Company).ProjectTo<ApplicationDto>();
+            
             return await applications.ToListAsync();
         }
 
-        public async Task<IEnumerable<Invitation>> GetJobSeekerInvitaions(int jobSeekerId)
+        public async Task<ApplicationDto> GetApplication(int jobSeekerId, int jobId)
         {
-            var invitations = context.Invitations.Where(i => i.JobSeekerID == jobSeekerId).Include(i => i.Job)
-                                    .Include(i => i.Job.Company);
-            return await invitations.ToListAsync();
-        }
-
-        public async Task<Application> GetApplication(int jobSeekerId, int jobId)
-        {
-            var application = await context.Applications.FindAsync(jobSeekerId, jobId);
+            var application = await context.Applications.Where(a => a.JobSeekerID == jobSeekerId && a.JobID == jobId).ProjectTo<ApplicationDto>().FirstOrDefaultAsync();
             return application;
         }
 
-        public async void DeleteApplication(int jobSeekerId, int jobId)
+        public async Task DeleteApplication(int jobSeekerId, int jobId)
         {
             //TODO: test this code it might cause errors due to the find method
             var application = context.Applications.Find(jobSeekerId, jobId);
@@ -99,6 +97,24 @@ namespace Inisra_Web_App_MVC.BLL
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<InvitationDto>> GetInvitaions(int jobSeekerId)
+        {
+            var invitations = context.Invitations.Where(i => i.JobSeekerID == jobSeekerId).Include(i => i.Job)
+                                    .Include(i => i.Job.Company).ProjectTo<InvitationDto>();
+            return await invitations.ToListAsync();
+        }
+
+        public async Task<InvitationDto> GetInvitation(int jobId, int jobSeekerId)
+        {
+            var invitation = await context.Invitations.Where(i => i.JobID == jobId && i.JobSeekerID == jobSeekerId).Include(i => i.Job)
+                                    .Include(i => i.Job.Company).ProjectTo<InvitationDto>().FirstOrDefaultAsync();
+            return invitation;
+        }
+
+
+
+
 
         private bool disposed = false;
 
