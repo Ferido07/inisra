@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
+using Inisra_Web_App_MVC.DTOs;
 
 namespace Inisra_Web_App_MVC.BLL
 {
@@ -12,9 +14,10 @@ namespace Inisra_Web_App_MVC.BLL
     {
         private InisraContext context = new InisraContext();
 
-        public async Task<IEnumerable<Company>> GetCompaniesAsync()
+        public async Task<IEnumerable<CompanyDto>> GetCompaniesAsync()
         {
-            return await context.Companies.ToListAsync();
+            var companies = context.Companies.ProjectTo<CompanyDto>();
+            return await companies.ToListAsync();
         }
 
         public async Task<Company> GetCompanyByIdAsync(int companyId)
@@ -67,40 +70,38 @@ namespace Inisra_Web_App_MVC.BLL
         }
 
         //todo: refactor to jobBLL if refactored code in CompanyProfile Controller gets error and also JobBLL would be needed in the controller
-        public IEnumerable<Job> GetCompanyJobs(int companyId, string jobTitle)
+        public IEnumerable<JobDto> GetCompanyJobs(int companyId, string jobTitle)
         {
             var jobs = context.Jobs.Where(j => j.CompanyID == companyId).Include(l => l.Location);
-            if (!String.IsNullOrEmpty(jobTitle))
+            if (!string.IsNullOrEmpty(jobTitle))
                 jobs = jobs.Where(j => j.Title.Contains(jobTitle));
 
-            return jobs.ToList();
+            var dtos = jobs.ProjectTo<JobDto>();
+            return dtos.ToList();
         }
         
-
-        public IEnumerable<Application> GetCompanyApplications(int companyId)
+        public IEnumerable<ApplicationDto> GetApplications(int companyId, int? jobId = null)
         {
-           var applications = context.Applications.Where(a => a.Job.CompanyID == companyId)
-                                .Include(a => a.Job).Include(a => a.JobSeeker);
-            //applications.GroupBy(a => a.Job.Title);
-            return applications.ToList();
-        }
+            var applications = context.Applications.Where(a => a.Job.CompanyID == companyId)
+                     .Include(a => a.Job).Include(a => a.JobSeeker);
 
-        public IEnumerable<Application> GetCompanyApplicationsForAJob(int companyId, int jobId)
-        {
-           var applications = context.Applications.Where(a => a.JobID == jobId && a.Job.CompanyID == companyId)
-                                .Include(a => a.Job).Include(a => a.JobSeeker);
+            if (jobId.HasValue)
+            {
+                applications = applications.Where(a => a.JobID == jobId.Value);
+            }
 
-            return applications.ToList();
-        }
+            var dtos = applications.ProjectTo<ApplicationDto>();
+            return dtos.ToList();
+        } 
 
-        public IEnumerable<Invitation> GetCompanyInvitations(int companyId)
+        public IEnumerable<InvitationDto> GetCompanyInvitations(int companyId)
         {
             var invitations = from i in context.Invitations
                               where i.Job.CompanyID == companyId
                               select i;
-            invitations.Include(i => i.Job).Include(i => i.JobSeeker);
+            var dtos = invitations.Include(i => i.Job).Include(i => i.JobSeeker).ProjectTo<InvitationDto>();
 
-            return invitations.ToList();
+            return dtos.ToList();
         }
 
         public async Task<Invitation> GetInvitationAsync(int jobId, int jobSeekerId)
@@ -123,21 +124,13 @@ namespace Inisra_Web_App_MVC.BLL
             return context.SaveChanges();
         }
 
-        public async Task<bool> DeleteInivitationAsync(int jobId, int jobSeekerId)
+        public async Task DeleteInivitationAsync(int jobId, int jobSeekerId)
         {
-            try
+            var invitation = await context.Invitations.FindAsync(jobId, jobSeekerId);
+            if (invitation != null)
             {
-                var invitation = context.Invitations.Single(i => i.JobID == jobId && i.JobSeekerID == jobSeekerId);
                 context.Invitations.Remove(invitation);
-                var result = await context.SaveChangesAsync();
-                if (result > 0)
-                    return true;
-                else
-                    return false;
-            }
-            catch (Exception)
-            {
-                return false;
+                await context.SaveChangesAsync();
             }
         }
 

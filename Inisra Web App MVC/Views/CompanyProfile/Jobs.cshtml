@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Inisra_Web_App_MVC.Models.Job>
+﻿@model IEnumerable<Inisra_Web_App_MVC.DTOs.JobDto>
 
 @{
     ViewBag.Title = "Jobs";
@@ -28,13 +28,13 @@
             @Html.DisplayNameFor(model => model.Profession)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Location.Name)
+            @Html.DisplayName("Location")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PostDate)
+            @Html.DisplayName("Post Date")
         </th>
         <th>
-           @Html.DisplayNameFor(model => model.ApplicationDeadlineDate)
+           @Html.DisplayName("Application Deadline")
         </th>
         <th></th>
     </tr>
@@ -49,7 +49,7 @@
             @Html.DisplayFor(modelItem => item.Profession)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Location.Name)
+            @Html.DisplayFor(modelItem => item.LocationName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PostDate)
@@ -58,11 +58,11 @@
             @Html.DisplayFor(modelItem => item.ApplicationDeadlineDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", "Jobs", new { id=item.ID }, new { }) |
-            @Html.ActionLink("Details", "Details", "Jobs", new { id=item.ID }, new { }) |
-            @Html.ActionLink("Delete", "Delete", "Jobs", new { id=item.ID }, new { }) |
-            @Html.ActionLink("Applications","Applications", new { jobID = item.ID }) |
-            @Html.ActionLink("Invite", "Invite", new { jobID = item.ID })
+            @Html.ActionLink("Edit", "Edit", "Jobs", new { id=item.Id }, new { }) |
+            @Html.ActionLink("Details", "Details", "Jobs", new { id=item.Id }, new { }) |
+            @Html.ActionLink("Delete", "Delete", "Jobs", new { id=item.Id }, new { }) |
+            @Html.ActionLink("Applications","Applications", new { jobID = item.Id }) |
+            @Html.ActionLink("Invite", "Invite", new { jobID = item.Id })
         </td>
     </tr>
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Inisra_Web_App_MVC.DTOs;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
@@ -78,7 +79,7 @@ namespace Inisra_Web_App_MVC.Controllers
                 {
                     await ComBLL.UpdateCompanyAsync(companyToUpdate);
                 }
-                catch (Exception e) { }
+                catch (Exception) { }
             } 
             return View(companyToUpdate);
         }
@@ -115,25 +116,17 @@ namespace Inisra_Web_App_MVC.Controllers
         //GET: CompanyProfile/Jobs?title=Manager
         public async Task<ActionResult> Jobs(string title)
         {
-            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));  
-            return View(ComBLL.GetCompanyJobs((int)companyUser.CompanyID, title));
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            var jobDtos = ComBLL.GetCompanyJobs((int)companyUser.CompanyID, title);
+            return View(jobDtos);
         }
 
         //GET: CompanyProfile/Applications?jobID=5
         public async Task<ActionResult> Applications(int? jobID)
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-
-            IEnumerable<Application> applications = new List<Application>();
-
-            if (jobID == null)
-            {
-                applications= ComBLL.GetCompanyApplications((int)companyUser.CompanyID);
-            }
-            else
-                applications = ComBLL.GetCompanyApplicationsForAJob((int)companyUser.CompanyID, (int)jobID);
-
-            return View(applications);
+            var applicationDtos = ComBLL.GetApplications(companyUser.CompanyID.Value, jobID);
+            return View(applicationDtos);
         }
 
         //GET: CompanyProfile/Invite
@@ -229,7 +222,8 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Invitations()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            return View(ComBLL.GetCompanyInvitations((int)companyUser.CompanyID));
+            var invitationDtos = ComBLL.GetCompanyInvitations((int)companyUser.CompanyID);
+            return View(invitationDtos);
         }
 
         //POST: CompanyProfile/Invitations/
@@ -254,6 +248,7 @@ namespace Inisra_Web_App_MVC.Controllers
             if (disposing)
             {
                 db.Dispose();
+                ComBLL.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using Inisra_Web_App_MVC.DTOs;
 using Inisra_Web_App_MVC.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Inisra_Web_App_MVC
 {
@@ -17,8 +13,8 @@ namespace Inisra_Web_App_MVC
                             cfg.CreateMap<Job, JobDto>()
                                     .ForMember(dto => dto.Rate, opt => opt.MapFrom(job => job.SalaryRate.ToString()));
 
-                        cfg.CreateMap<JobSeeker, JobSeekerDto>()
-                                .ForMember(dto => dto.Sex, opt => opt.MapFrom(js => js.IsFemale.HasValue ? (js.IsFemale.Value ? "Female" : "Male") : ("Not Set") ));
+                            cfg.CreateMap<JobSeeker, JobSeekerDto>()
+                                    .ForMember(dto => dto.Sex, opt => opt.MapFrom(js => js.IsFemale.HasValue ? (js.IsFemale.Value ? "Female" : "Male") : ("Not Set") ));
 
                             cfg.CreateMap<Application, ApplicationDto>()
                                     .ForMember(dto => dto.JobSeekerFullName, opt => opt.MapFrom(app => app.JobSeeker.FirstName + " " + app.JobSeeker.LastName))
@@ -29,6 +25,8 @@ namespace Inisra_Web_App_MVC
                                     .ForMember(dto => dto.JobSeekerFullName, opt => opt.MapFrom(app => app.JobSeeker.FirstName + " " + app.JobSeeker.LastName))
                                     .ForMember(dto => dto.CompanyName, opt => opt.MapFrom(inv => inv.Job.Company.Name))
                                     .ForMember(dto => dto.CompanyId, opt => opt.MapFrom(inv => inv.Job.CompanyID));
+
+                            cfg.CreateMap<Company, CompanyDto>();
                         }
             );
         }

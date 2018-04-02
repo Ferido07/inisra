@@ -191,6 +191,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\CompaniesController.cs" />
     <Compile Include="Api\JobsController.cs" />
     <Compile Include="Api\JobSeekersController.cs" />
     <Compile Include="Api\SkillsController.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="DAL\InisraContext.cs" />
     <Compile Include="DTOs\ApplicationDto.cs" />
+    <Compile Include="DTOs\CompanyDto.cs" />
     <Compile Include="DTOs\InvitationDto.cs" />
     <Compile Include="DTOs\JobDto.cs" />
     <Compile Include="DTOs\JobSeekerDto.cs" />

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Inisra_Web_App_MVC.Models.Application>
+﻿@model IEnumerable<Inisra_Web_App_MVC.DTOs.ApplicationDto>
 
 @{
     ViewBag.Title = "Applications";
@@ -10,13 +10,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Job.Title)
+            @Html.DisplayNameFor(model => model.JobTitle)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.JobSeeker.FullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.JobSeeker.Email)
+            @Html.DisplayName("Applicant Name")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ApplicationDate)
@@ -27,13 +24,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.ActionLink(item.Job.Title,"Details", "Jobs", new { id = item.JobID }, new { }  )
+            @Html.ActionLink(item.JobTitle,"Details", "Jobs", new { id = item.JobId }, new { }  )
         </td>
         <td>
-            @Html.ActionLink(item.JobSeeker.FullName, "Details", "JobSeekers", new { id = item.JobSeekerID }, new { } )
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobSeeker.Email)
+            @Html.ActionLink(item.JobSeekerFullName, "Details", "JobSeekers", new { id = item.JobSeekerId }, new { } )
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ApplicationDate)

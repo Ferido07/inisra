@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Inisra_Web_App_MVC.Models.Invitation>
+﻿@model IEnumerable<Inisra_Web_App_MVC.DTOs.InvitationDto>
 
 @{
     ViewBag.Title = "Invitations";
@@ -12,7 +12,6 @@
         <tr>
             <th>Name </th>
             <th>Job Title</th>
-            <th>Profession</th>
             <th>Invitation Date</th>
             <th></th>
         </tr>
@@ -24,15 +23,12 @@
                 @Html.AntiForgeryToken()
               <tr>
                 <td>
-                    @Html.ActionLink(item.JobSeeker.FullName, "Details", "JobSeekers", new { id = item.JobSeekerID }, new { })
-                    @Html.Hidden("jobSeekerID", item.JobSeekerID)
+                    @Html.ActionLink(item.JobSeekerFullName, "Details", "JobSeekers", new { id = item.JobSeekerId }, new { })
+                    @Html.Hidden("jobSeekerID", item.JobSeekerId)
                 </td>
                 <td>
-                    @Html.ActionLink(item.Job.Title, "Details", "Jobs", new { id = item.JobID }, new { })
-                    @Html.Hidden("jobID", item.JobID)
-                </td>
-                <td>
-                    @Html.DisplayFor(m => item.Job.Profession)
+                    @Html.ActionLink(item.JobTitle, "Details", "Jobs", new { id = item.JobId }, new { })
+                    @Html.Hidden("jobID", item.JobId)
                 </td>
                 <td>
                     @Html.DisplayFor(m => item.InvitationDate)

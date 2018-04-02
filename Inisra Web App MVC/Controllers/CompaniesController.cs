@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Net;
 using System.Web.Mvc;
-using Inisra_Web_App_MVC.DAL;
 using Inisra_Web_App_MVC.Models;
 using Inisra_Web_App_MVC.BLL;
 
@@ -9,14 +8,13 @@ namespace Inisra_Web_App_MVC.Controllers
 {
     public class CompaniesController : Controller
     {
-        private InisraContext db = new InisraContext();
-
         private CompanyBLL comBLL = new CompanyBLL();
 
         // GET: Companies
         public async Task<ActionResult> Index()
         {
-            return View(await comBLL.GetCompaniesAsync());
+            var companydtos = await comBLL.GetCompaniesAsync();
+            return View(companydtos);
         }
 
         // GET: Companies/Details/5
