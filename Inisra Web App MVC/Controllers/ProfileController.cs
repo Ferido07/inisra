@@ -3,11 +3,9 @@ using Inisra_Web_App_MVC.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -84,6 +82,15 @@ namespace Inisra_Web_App_MVC.Controllers
             ViewBag.LocationID = new SelectList(db.Locations, "ID", "Name", jobSeeker.LocationID);
             return View(jobSeeker);
         }
+
+        public async Task<ActionResult> Resume()
+        {
+            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            JobSeeker jobSeeker = await db.JobSeekers.FindAsync(jobSeekerUser.JobSeekerID);
+            ViewBag.ResumeCount = jobSeeker.CVs.Count;
+            return View();
+        }
+
         [HttpPost]
         public async Task<ActionResult> UploadCV(HttpPostedFileBase file)
         {
@@ -103,7 +110,7 @@ namespace Inisra_Web_App_MVC.Controllers
                 await db.SaveChangesAsync();
  //               file.SaveAs(path);
             }
-            return RedirectToAction("Edit");
+            return RedirectToAction("Details");
         }
 
 
