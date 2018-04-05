@@ -79,6 +79,11 @@ namespace Inisra_Web_App_MVC.BLL
             var dtos = jobs.ProjectTo<JobDto>();
             return dtos.ToList();
         }
+        public async Task<Job> GetJob(int companyId, int jobId)
+        {
+            Job job = await context.Jobs.SingleOrDefaultAsync(j => j.CompanyID == companyId && j.ID == jobId);
+            return job;
+        }
         
         public IEnumerable<ApplicationDto> GetApplications(int companyId, int? jobId = null)
         {
@@ -110,7 +115,7 @@ namespace Inisra_Web_App_MVC.BLL
             return invitation;
         }
 
-        public int Invite(int jobId, int jobSeekerId)
+        public int Invite(int companyId, int jobId, int jobSeekerId)
         {
             /*todo :Note: the checking meckanism before adding invitation may need to be incorporated here
               than in the controller */
@@ -124,10 +129,10 @@ namespace Inisra_Web_App_MVC.BLL
             return context.SaveChanges();
         }
 
-        public async Task DeleteInivitationAsync(int jobId, int jobSeekerId)
+        public async Task DeleteInivitationAsync(int companyId, int jobId, int jobSeekerId)
         {
             var invitation = await context.Invitations.FindAsync(jobId, jobSeekerId);
-            if (invitation != null)
+            if (invitation != null && invitation.Job.CompanyID == companyId)
             {
                 context.Invitations.Remove(invitation);
                 await context.SaveChangesAsync();

@@ -3,6 +3,7 @@ using System.Net;
 using System.Web.Mvc;
 using Inisra_Web_App_MVC.Models;
 using Inisra_Web_App_MVC.BLL;
+using Inisra_Web_App_MVC.DTOs;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
@@ -24,12 +25,13 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = await comBLL.GetCompanyByIdAsync(((int)id));
+            var company = await comBLL.GetCompanyByIdAsync(((int)id));
             if (company == null)
             {
                 return HttpNotFound();
             }
-            return View(company);
+            var dto = AutoMapper.Mapper.Map<Company, CompanyDto>(company);
+            return View(dto);
         }
         /*
         // GET: Companies/Create

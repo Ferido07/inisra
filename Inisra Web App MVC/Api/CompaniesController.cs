@@ -93,9 +93,9 @@ namespace Inisra_Web_App_MVC.Api
         [HttpPost]
         [Route("invite/{jobId:int}/{jobSeekerId:int}")]
         [ResponseType(typeof(void))]
-        public IHttpActionResult Invite (int jobId, int jobSeekerId)
+        public IHttpActionResult Invite (int companyId, int jobId, int jobSeekerId)
         {
-            bll.Invite(jobId, jobSeekerId);
+            bll.Invite(companyId, jobId, jobSeekerId);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -110,9 +110,9 @@ namespace Inisra_Web_App_MVC.Api
         [HttpDelete]
         [Route("invitations/{jobId:int}/{jobSeekerId:int}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> DeleteInvitation(int jobId, int jobSeekerId) 
+        public async Task<IHttpActionResult> DeleteInvitation(int jobId, int jobSeekerId,int companyId) 
         {
-            await bll.DeleteInivitationAsync(jobId, jobSeekerId);
+            await bll.DeleteInivitationAsync(companyId, jobId, jobSeekerId);
             return StatusCode(HttpStatusCode.NoContent);
         }
 

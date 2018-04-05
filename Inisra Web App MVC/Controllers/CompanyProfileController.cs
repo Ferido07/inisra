@@ -1,23 +1,19 @@
-﻿using Inisra_Web_App_MVC.DAL;
+﻿using Inisra_Web_App_MVC.BLL;
+using Inisra_Web_App_MVC.DTOs;
 using Inisra_Web_App_MVC.Models;
-using Inisra_Web_App_MVC.BLL;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Inisra_Web_App_MVC.DTOs;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
     [Authorize(Roles = "Company")]
     public class CompanyProfileController : Controller
     {
-        private InisraContext db = new InisraContext();
-        private CompanyBLL ComBLL = new CompanyBLL();
+        private CompanyBLL bll = new CompanyBLL();
         private InisraUserManager _userManager;
 
         public InisraUserManager UserManager
@@ -42,20 +38,21 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Details()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            Company company = await ComBLL.GetCompanyByIdAsync((int)companyUser.CompanyID);
+            Company company = await bll.GetCompanyByIdAsync((int)companyUser.CompanyID);
             //just in case but almost never happens
             if (company == null)
             {
                 return HttpNotFound();
             }
-            return View(company);
+            var dto = AutoMapper.Mapper.Map<Company, CompanyDto>(company);
+            return View(dto);
         }
 
         // GET: CompanyProfile/Edit
         public async Task<ActionResult> Edit()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            Company company = await ComBLL.GetCompanyByIdAsync((int)companyUser.CompanyID);
+            Company company = await bll.GetCompanyByIdAsync((int)companyUser.CompanyID);
             //just in case but almost never happens
             if (company == null)
             {
@@ -72,12 +69,12 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> EditPost()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            var companyToUpdate = await ComBLL.GetCompanyByIdAsync((int)companyUser.CompanyID);
+            var companyToUpdate = await bll.GetCompanyByIdAsync((int)companyUser.CompanyID);
             if(TryUpdateModel(companyToUpdate,"",new string[] { "Name","Email","PhoneNo","Description" }))
             {
                 try
                 {
-                    await ComBLL.UpdateCompanyAsync(companyToUpdate);
+                    await bll.UpdateCompanyAsync(companyToUpdate);
                 }
                 catch (Exception) { }
             } 
@@ -117,7 +114,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Jobs(string title)
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            var jobDtos = ComBLL.GetCompanyJobs((int)companyUser.CompanyID, title);
+            var jobDtos = bll.GetCompanyJobs((int)companyUser.CompanyID, title);
             return View(jobDtos);
         }
 
@@ -125,7 +122,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Applications(int? jobID)
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            var applicationDtos = ComBLL.GetApplications(companyUser.CompanyID.Value, jobID);
+            var applicationDtos = bll.GetApplications(companyUser.CompanyID.Value, jobID);
             return View(applicationDtos);
         }
 
@@ -155,7 +152,7 @@ namespace Inisra_Web_App_MVC.Controllers
                 return RedirectToAction("Index", "JobSeekers");
             }
 
-            var compnayUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             
             //assigning stored value from previous request with jobID or jobSeekerID or the same request
             //so that these variables can be used intead of session object 
@@ -164,40 +161,46 @@ namespace Inisra_Web_App_MVC.Controllers
             jobID = (int)Session["JobID"];
             jobSeekerID = (int)Session["JobSeekerID"];
 
-            var job = db.Jobs.Where(j => j.CompanyID == compnayUser.CompanyID && j.ID == jobID).Single();
-            var jobSeeker = await db.JobSeekers.FindAsync(jobSeekerID);
+            //checking if the person is already invited to the job
+            Invitation invitation = await bll.GetInvitationAsync(jobID.Value, jobSeekerID.Value);
+            if (invitation == null)
+            {
+                var job = await bll.GetJob(companyUser.CompanyID.Value, jobID.Value);
+                JobSeeker jobSeeker = null;
 
-            if (job == null || jobSeeker == null)
-            {
-                return HttpNotFound();
-            }
-            else
-            {
-                //checking if the person is already invited to the job
-                Invitation invitation = await ComBLL.GetInvitationAsync(job.ID, jobSeeker.ID);
-                if (invitation == null)
+                using (JobSeekerBLL jsbll = new BLL.JobSeekerBLL())
+                    jobSeeker = await jsbll.GetJobSeekerById(jobSeekerID.Value);
+
+                //if job or jobseeker does not exist
+                if (job == null || jobSeeker == null)
+                {
+                    return HttpNotFound();
+                }
+                else
                 {
                     invitation = new Invitation()
                     {
-                        JobID = (int)jobID,
-                        JobSeekerID = (int)jobSeekerID,
+                        JobID = jobID.Value,
+                        JobSeekerID = jobSeekerID.Value,
                         Job = job,
                         JobSeeker = jobSeeker
                     };
                     return View(invitation);
                 }
-
+            }
+            else
+            {
                 //todo tell company user that the job seeeker is already invited to the job
                 //clear session data since already invited
                 Session["JobID"] = Session["JobSeekerID"] = null;
                 return RedirectToAction("Invitations");
-            }
+            }        
         }
 
         //POST: CompanyProfile/Invite
         [HttpPost, ActionName("Invite")]
         [ValidateAntiForgeryToken]
-        public ActionResult InviteConfirmed()
+        public async Task<ActionResult> InviteConfirmed()
         {
             //means already invited maybe through another tab or sometime before and since the invitation exists 
             //the session data cleared or some server error happened
@@ -206,11 +209,12 @@ namespace Inisra_Web_App_MVC.Controllers
                 return RedirectToAction("Invitations");
                 //return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
-
+             
+            int companyId = ((CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()))).CompanyID.Value;
             int jobID = (int)Session["JobID"];
             int jobSeekerID = (int)Session["JobSeekerID"];
 
-            ComBLL.Invite(jobID, jobSeekerID);
+            bll.Invite(companyId, jobID, jobSeekerID);
 
             //clear the data since succesfully added invitation
             Session["JobID"] = Session["JobSeekerID"] = null;
@@ -222,7 +226,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> Invitations()
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            var invitationDtos = ComBLL.GetCompanyInvitations((int)companyUser.CompanyID);
+            var invitationDtos = bll.GetCompanyInvitations((int)companyUser.CompanyID);
             return View(invitationDtos);
         }
 
@@ -232,14 +236,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> DeleteInvitation(int jobID, int jobSeekerID)
         {
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            Job job = await db.Jobs.FindAsync(jobID);
-            JobSeeker jobSeeker = await db.JobSeekers.FindAsync(jobSeekerID);
-
-            if ((job == null) || (jobSeeker == null) || (job.CompanyID != companyUser.CompanyID) )
-                return HttpNotFound();
-
-            await ComBLL.DeleteInivitationAsync(jobID, jobSeekerID);
-
+            await bll.DeleteInivitationAsync(companyUser.CompanyID.Value, jobID, jobSeekerID);
             return RedirectToAction("Invitations");
         }
 
@@ -247,8 +244,7 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
-                ComBLL.Dispose();
+                bll.Dispose();
             }
             base.Dispose(disposing);
         }
