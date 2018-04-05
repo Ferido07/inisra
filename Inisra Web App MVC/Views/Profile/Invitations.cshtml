@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Inisra_Web_App_MVC.Models.Invitation>
+﻿@model IEnumerable<Inisra_Web_App_MVC.DTOs.InvitationDto>
 
 @{
     Layout = "~/Views/Shared/Profile.cshtml";
@@ -19,7 +19,6 @@
         <tr>
             <th>Company </th>
             <th>Job Title</th>
-            <th>Profession</th>
             <th>Invitation Date</th>
             <th></th>
         </tr>
@@ -28,20 +27,17 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.Job.Company.Name, "Details", "Companies", new { id = item.Job.CompanyID }, new { })
+                    @Html.ActionLink(item.CompanyName, "Details", "Companies", new { id = item.CompanyId }, new { })
                 </td>
                 <td>
-                    @Html.ActionLink(item.Job.Title, "Details", "Jobs", new { id = item.JobID }, new { })
-                </td>
-                <td>
-                    @Html.DisplayFor(m => item.Job.Profession)
+                    @Html.ActionLink(item.JobTitle, "Details", "Jobs", new { id = item.JobId }, new { })
                 </td>
                 <td>
                     @Html.DisplayFor(m => item.InvitationDate)
                 </td>
                 <td>
-                    <button type="submit" name="" value="@item.JobID" class="btn btn-primary" formaction="" formmethod="post">Accept</button>
-                    <button type="submit" name="" value="@item.JobID" class="btn btn-danger" formaction="" formmethod="post">Reject</button>
+                    <button type="submit" name="" value="@item.JobId" class="btn btn-primary" formaction="" formmethod="post">Accept</button>
+                    <button type="submit" name="" value="@item.JobId" class="btn btn-danger" formaction="" formmethod="post">Reject</button>
                 </td>
             </tr>
         }
