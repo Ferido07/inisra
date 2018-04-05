@@ -1,4 +1,4 @@
-﻿@model Inisra_Web_App_MVC.Models.Job
+﻿@model Inisra_Web_App_MVC.DTOs.JobDto
 
 @{
     ViewBag.Title = "Details";
@@ -11,11 +11,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Company.Name)
+            @Html.DisplayName("Company")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Company.Name)
+            @Html.DisplayFor(model => model.CompanyName)
         </dd>
 
         <dt>
@@ -41,32 +41,26 @@
             @Html.DisplayFor(model => model.Salary)
         </dd>
 
+   
         <dt>
-            @Html.DisplayNameFor(model => model.SalaryCurrency)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SalaryCurrency)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SalaryRate)
+            @Html.DisplayName("Salary Rate")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SalaryRate)
+            @Html.DisplayFor(model => model.Rate)
         </dd>
 
         @if (ViewBag.IsOwner ?? false)
         {
             <dt>
-                @Html.DisplayNameFor(model => model.IsOpen)
+                @Html.DisplayName("Open for Application")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.IsOpen)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.IsInvitationOnly)
+                @Html.DisplayName("Privacy")
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.IsInvitationOnly)
@@ -74,15 +68,15 @@
 
         }
         <dt>
-            @Html.DisplayNameFor(model => model.Location)
+            @Html.DisplayName("Location")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Location.Name)
+            @Html.DisplayFor(model => model.LocationName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PostDate)
+            @Html.DisplayName("Post Date")
         </dt>
 
         <dd>
@@ -90,7 +84,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ApplicationDeadlineDate)
+            @Html.DisplayName("Application Deadline")
         </dt>
 
         <dd>
@@ -110,15 +104,15 @@
 <p>
    @if (!User.IsInRole("Company"))
    {
-       @Html.ActionLink("Apply", "Apply", new { id = Model.ID })
+       @Html.ActionLink("Apply", "Apply", new { id = Model.Id })
        <label> | </label>
    } 
    
    @if (ViewBag.IsOwner?? false)
    {
-       @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+       @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
        <label> | </label>
-       @Html.ActionLink("Delete", "Delete", new { id = Model.ID })
+       @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
        <label> | </label>
    }
        @Html.ActionLink("Back to List", "Index")

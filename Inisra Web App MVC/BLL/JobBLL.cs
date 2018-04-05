@@ -74,7 +74,18 @@ namespace Inisra_Web_App_MVC.BLL
 
         public async Task AddJob(Job job)
         {
-            if (CheckJobValidity(job)) { 
+            if (CheckJobValidity(job)) {
+
+                //check if the location already Exists. if the location doesnt exist the default value returned is null
+                // the "==" operator is case insensitive.
+                var location = await context.Locations.SingleOrDefaultAsync(l => l.Name == job.Location.Name);
+                if (location != null)
+                {
+                    job.LocationID = location.ID;
+                    job.Location = location;
+                }
+                else
+                    context.Locations.Add(job.Location);
                 context.Jobs.Add(job);
                 await context.SaveChangesAsync();
             }
@@ -82,7 +93,17 @@ namespace Inisra_Web_App_MVC.BLL
 
         public async Task UpdateJob(Job job)
         {
-            if (CheckJobValidity(job)) { 
+            if (CheckJobValidity(job)) {
+
+                //check if the location already Exists. if the location doesnt exist the default value returned is null         
+                var location = await context.Locations.SingleOrDefaultAsync(l => l.Name == job.Location.Name);
+                if (location != null)
+                {
+                    job.LocationID = location.ID;
+                    job.Location = location;
+                }
+                else
+                    context.Locations.Add(job.Location);
                 //check if the applications deadline is modified if yes then chck if its later than current date.
                 context.Entry(job).State = EntityState.Modified;
                 await context.SaveChangesAsync();
@@ -94,6 +115,8 @@ namespace Inisra_Web_App_MVC.BLL
         {
             if (CheckJobValidity(job))
             {
+
+
                 context.Jobs.Remove(job);
                 await context.SaveChangesAsync();
             }

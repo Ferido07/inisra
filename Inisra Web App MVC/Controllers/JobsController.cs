@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Inisra_Web_App_MVC.DAL;
 using Inisra_Web_App_MVC.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using Inisra_Web_App_MVC.BLL;
+using Inisra_Web_App_MVC.DTOs;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
     public class JobsController : Controller
     {
-        private InisraContext db = new InisraContext();
+        private JobBLL bll = new JobBLL();
         private InisraUserManager _userManager;
 
         public InisraUserManager UserManager
@@ -34,25 +30,8 @@ namespace Inisra_Web_App_MVC.Controllers
         // GET: Jobs
         public async Task<ActionResult> Index(string title, string profession)
         {
-            var jobs = from j in db.Jobs
-                       where j.IsInvitationOnly == false && j.IsOpen == true
-                       select j;
-            // this one didnt work maybe try IsOpen.CompareTo 
-            //jobs.Where(j => j.IsInvitationOnly == false && j.IsOpen == true);
-
-            if (!String.IsNullOrEmpty(title))
-            {
-                // When you call the Contains  method on an IEnumerable  collection, you get the .NET Framework implementation;
-                // when you call it on an IQueryable  object, you get the database provider implementation.
-                // contains is converted to like on the database which is case insensitive for the entity framework 
-                // provider implementation
-                jobs = jobs.Where(j => j.Title.Contains(title));
-            }
-            if (!String.IsNullOrEmpty(profession))
-                jobs = jobs.Where(j => j.Profession.Contains(profession));
-
-            jobs.Include(j => j.Company);
-            return View(await jobs.ToListAsync());
+            var jobs = await bll.SearchJobs(title, profession, "", "", null);
+            return View(jobs);
         }
 
         // GET: Jobs/Details/5
@@ -62,7 +41,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Job job = await db.Jobs.FindAsync(id);
+            Job job = await bll.GetJobById(id.Value);
             if (job == null)
             {
                 return HttpNotFound();
@@ -72,7 +51,8 @@ namespace Inisra_Web_App_MVC.Controllers
                 var companyUser=(CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
                 ViewBag.IsOwner = (job.CompanyID == companyUser.CompanyID) ? true : false;
             }
-            return View(job);
+            var dto = AutoMapper.Mapper.Map<Job, JobDto>(job);
+            return View(dto);
         }
 
         // GET: Jobs/Post
@@ -83,8 +63,11 @@ namespace Inisra_Web_App_MVC.Controllers
             var companyID = (int)companyUser.CompanyID;
             var job = new Job {
                 CompanyID = companyID,
-                Company = db.Companies.Single(c => c.ID == companyID)
+                
             };
+            using (CompanyBLL combll = new BLL.CompanyBLL())
+                job.Company = await combll.GetCompanyByIdAsync(companyUser.CompanyID.Value);
+
             return View(job);
         }
 
@@ -98,29 +81,7 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //check if the location already Exists
-                try {
-                    var location = db.Locations.Single(l => l.Name == job.Location.Name);
-                    if (location != null)
-                    {
-                        job.LocationID = location.ID;
-                        job.Location = location;
-                    }         
-                }
-                catch(InvalidOperationException IOE)
-                {
-                    //if the inverse of the location specified doesnt exist 
-                    //i.e some other error
-                    //else it would just go out and save the new location
-                    if (!IOE.Message.Equals("Sequence contains no elements"))
-                    {
-                        ModelState.AddModelError("", IOE.Message);
-                        return View(job);
-                    }
-                    db.Locations.Add(job.Location);
-                }
-                db.Jobs.Add(job);
-                await db.SaveChangesAsync();
+                await bll.AddJob(job);
                 return RedirectToAction("Index");
             }
             return View(job);
@@ -134,7 +95,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Job job = await db.Jobs.FindAsync(id);
+            Job job = await bll.GetJobById(id.Value);
             if (job == null)
             {
                 return HttpNotFound();
@@ -159,33 +120,9 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                //check if the location already Exists
-                try
-                {
-                    var location = db.Locations.Single(l => l.Name == job.Location.Name);
-                    if (location != null)
-                    {
-                        job.LocationID = location.ID;
-                        job.Location = location;
-                    }
-                }
-                catch (InvalidOperationException IOE)
-                {
-                    //if the inverse of the location specified doesnt exist 
-                    //i.e some other error
-                    //else it would just go out and save the new location
-                    if (!IOE.Message.Equals("Sequence contains no elements"))
-                    {
-                        ModelState.AddModelError("", IOE.Message);
-                        return View(job);
-                    }
-                    db.Locations.Add(job.Location);
-                }
-                db.Entry(job).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                await bll.UpdateJob(job);
                 return RedirectToAction("Index");
-            }
-           
+            }          
             return View(job);
         }
 
@@ -197,7 +134,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Job job = await db.Jobs.FindAsync(id);
+            Job job = await bll.GetJobById(id.Value);
             if (job == null)
             {
                 return HttpNotFound();
@@ -217,9 +154,8 @@ namespace Inisra_Web_App_MVC.Controllers
         [Authorize(Roles = "Company")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Job job = await db.Jobs.FindAsync(id);
-            db.Jobs.Remove(job);
-            await db.SaveChangesAsync();
+            Job job = await bll.GetJobById(id);
+            await bll.DeleteJob(job);
             return RedirectToAction("Index");
         }
 
@@ -231,7 +167,7 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Job job = await db.Jobs.FindAsync(id);
+            Job job = await bll.GetJobById(id.Value);
             if (job == null)
             {
                 return HttpNotFound();
@@ -239,10 +175,13 @@ namespace Inisra_Web_App_MVC.Controllers
 
             //check if the user has already applied
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            var application = await db.Applications.FindAsync(jobSeekerUser.JobSeekerID, job.ID);
-            if (application == null)
+            using (JobSeekerBLL jsbll = new BLL.JobSeekerBLL())
             {
-                return View(job);
+                var application = await jsbll.GetApplication(jobSeekerUser.JobSeekerID.Value, job.ID);
+                if (application == null)
+                {
+                    return View(job);
+                }
             }
             //todo how to tell the user that he has already applied.
             return RedirectToAction("Index");
@@ -258,21 +197,15 @@ namespace Inisra_Web_App_MVC.Controllers
         [Authorize(Roles ="JobSeeker")]
         public async Task<ActionResult> ApplyConfirmed(int id)
         {
-            Job job = await db.Jobs.FindAsync(id);
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            Application application;
-            application = await db.Applications.FindAsync(jobSeekerUser.JobSeekerID, job.ID);
-            if (application == null) { 
-                application = new Application()
+            using (JobSeekerBLL jsbll = new BLL.JobSeekerBLL())
+            {
+                var application = await jsbll.GetApplication(jobSeekerUser.JobSeekerID.Value, id);
+                if (application == null)
                 {
-                    JobID = job.ID,
-                    JobSeekerID = (int)jobSeekerUser.JobSeekerID
-                };
-                db.Applications.Add(application);
-                await db.SaveChangesAsync();
-            }
-            
-            
+                    await jsbll.Apply(jobSeekerUser.JobSeekerID.Value, id);
+                }
+            }        
             return RedirectToAction("Index");
         }
 
@@ -280,7 +213,7 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                bll.Dispose();
             }
             base.Dispose(disposing);
         }
