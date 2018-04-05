@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Inisra_Web_App_MVC.Models.JobSeeker>
+﻿@model IEnumerable<Inisra_Web_App_MVC.DTOs.JobSeekerDto>
 
 @{
     ViewBag.Title = "Index";
@@ -9,7 +9,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Location.Name)
+            @Html.DisplayName("Location")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstName)
@@ -35,7 +35,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Location.Name)
+            @Html.DisplayFor(modelItem => item.LocationName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FirstName)
@@ -56,11 +56,11 @@
             @Html.DisplayFor(modelItem => item.Birthday)
         </td>
         <td>           
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) 
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) 
             @if (User.IsInRole("Company"))
             {
                 <label> | </label>
-                @Html.ActionLink("Invite to Job", "Invite", "CompanyProfile", new { jobSeekerID = item.ID }, new { })
+                @Html.ActionLink("Invite to Job", "Invite", "CompanyProfile", new { jobSeekerID = item.Id }, new { })
             }
         </td>
     </tr>

@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Inisra_Web_App_MVC.DAL;
 using Inisra_Web_App_MVC.Models;
+using Inisra_Web_App_MVC.BLL;
+using Inisra_Web_App_MVC.DTOs;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
     public class JobSeekersController : Controller
     {
-        private InisraContext db = new InisraContext();
 
+        private JobSeekerBLL bll = new JobSeekerBLL();
         // GET: JobSeekers
         public async Task<ActionResult> Index()
         {
-            var jobSeekers = db.JobSeekers.Include(j => j.Location);
-            return View(await jobSeekers.ToListAsync());
+            var jobSeekers = await bll.GetJobSeekers();
+            return View(jobSeekers);
         }
 
         // GET: JobSeekers/Details/5
@@ -30,12 +25,13 @@ namespace Inisra_Web_App_MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            JobSeeker jobSeeker = await db.JobSeekers.FindAsync(id);
+            var jobSeeker = await bll.GetJobSeekerById(id.Value);
             if (jobSeeker == null)
             {
                 return HttpNotFound();
             }
-            return View(jobSeeker);
+            var dto = AutoMapper.Mapper.Map<JobSeeker, JobSeekerDto>(jobSeeker);
+            return View(dto);
         }
         /*
         // GET: JobSeekers/Create
@@ -68,7 +64,7 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                bll.Dispose();
             }
             base.Dispose(disposing);
         }
