@@ -59,7 +59,7 @@ namespace Inisra_Web_App_MVC.Models
        // [StringLength(100, ErrorMessage = "Location cannot be longer than 100 characters.")]
         public int? LocationID { set; get; }
 
-        //todo add cv
+
 
         /*It doesnt need to hold the account as it is independent and in different use cases(domain)*/
         //public virtual JobSeekerUser JobSeekerUser { get; set; }

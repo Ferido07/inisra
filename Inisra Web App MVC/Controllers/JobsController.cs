@@ -142,7 +142,7 @@ namespace Inisra_Web_App_MVC.Controllers
             var companyUser = (CompanyUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             if (job.CompanyID != companyUser.CompanyID)
             {
-                //todo add needed error report that the job is not his to edit 
+                //todo add needed error report that the job is not his to delete 
                 return RedirectToAction("Index");
             }
             return View(job);

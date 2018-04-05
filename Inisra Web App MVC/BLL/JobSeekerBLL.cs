@@ -89,7 +89,6 @@ namespace Inisra_Web_App_MVC.BLL
 
         public async Task DeleteApplication(int jobSeekerId, int jobId)
         {
-            //TODO: test this code it might cause errors due to the find method
             var application = context.Applications.Find(jobSeekerId, jobId);
             if (application != null)
             {

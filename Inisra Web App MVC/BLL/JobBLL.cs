@@ -37,8 +37,6 @@ namespace Inisra_Web_App_MVC.BLL
             var jobs = context.Jobs.Where(j => j.CompanyID == companyId).Include(l => l.Location).ProjectTo<JobDto>();
             return await jobs.ToListAsync();
         }
-        //todo: nef gets
-        //could do getjobsbylocationid but that is useless. for all practical purpose that is not used only search is used
 
         public async Task<IEnumerable<JobDto>> SearchJobs(string title, string profession, string location, string companyName, int? companyId)
         {
@@ -69,8 +67,6 @@ namespace Inisra_Web_App_MVC.BLL
 
             return await jobs.ProjectTo<JobDto>().ToListAsync();   
         }
-
-        //todo : possible to have postjob, editjob then make addjob and updatejob private but only gives name convention for the respective services 
 
         public async Task AddJob(Job job)
         {

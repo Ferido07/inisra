@@ -69,7 +69,6 @@ namespace Inisra_Web_App_MVC.BLL
 
         }
 
-        //todo: refactor to jobBLL if refactored code in CompanyProfile Controller gets error and also JobBLL would be needed in the controller
         public IEnumerable<JobDto> GetCompanyJobs(int companyId, string jobTitle)
         {
             var jobs = context.Jobs.Where(j => j.CompanyID == companyId).Include(l => l.Location);
