@@ -8,12 +8,12 @@
 
 <div class="col-md-3">
     <ul class="nav nav-pills nav-stacked">
-        <li class="@ViewBag.Details"><a href="~/CompanyProfile/Details">Basic</a></li>
-        <li class="@ViewBag.Jobs"><a href="~/CompanyProfile/Jobs">Jobs</a></li>
+        <li class="@ViewBag.Details">@Html.ActionLink("Basic", "Details", "CompanyProfile")</li>
+        <li class="@ViewBag.Jobs">@Html.ActionLink("Jobs", "Jobs", "CompanyProfile")</li>
         <li class=""><a href="#">Post Job</a></li>
-        <li class="@ViewBag.Invite"><a href="~/CompanyProfile/Invite">Invite</a></li>
-        <li class="@ViewBag.Applications"><a href="~/CompanyProfile/Applications">Applications</a></li>
-        <li class="@ViewBag.Invitations"><a href="~/CompanyProfile/Invitations">Invitations</a></li>
+        <li class="@ViewBag.Invite">@Html.ActionLink("Invite", "Invite", "CompanyProfile")</li>
+        <li class="@ViewBag.Applications">@Html.ActionLink("Applications", "Applications", "CompanyProfile")</li>
+        <li class="@ViewBag.Invitations">@Html.ActionLink("Invitations", "Invitations", "CompanyProfile")</li>
         <li class="@ViewBag.JobSeekers"><a href="#">Bookmarked Jobseekers</a></li>
     </ul>
 </div>

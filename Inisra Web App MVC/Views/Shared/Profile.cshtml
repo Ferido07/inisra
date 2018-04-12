@@ -2,20 +2,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <div class="page-header">
     <h2>Profile</h2>
 </div>
 
 <div class="col-md-3">
     <ul class="nav nav-pills nav-stacked">
-        <li class="@ViewBag.Details"><a href="~/Profile/Details">Basic</a></li>
+        <li class="@ViewBag.Details">@Html.ActionLink("Basic","Details","Profile")</li>
         <li class="@ViewBag.Skills"><a href="#">Skills</a></li>
         <li class="@ViewBag.Certificates"><a href="#">Certificates</a></li>
         <li class="@ViewBag.Educations"><a href="#">Educations</a></li>
-        <li class="@ViewBag.Applications"><a href="~/Profile/Applications">Applications</a></li>
-        <li class="@ViewBag.Invitations"><a href="~/Profile/Invitations">Invitations</a></li>
-        <li class="@ViewBag.Resumes"><a href="Resume">Resume</a></li>
+        <li class="@ViewBag.Applications">@Html.ActionLink("Applications","Applications","Profile")</li>
+        <li class="@ViewBag.Invitations">@Html.ActionLink("Invitations", "Invitations", "Profile")</li>
+        <li class="@ViewBag.Resumes">@Html.ActionLink("Resumes", "Resumes", "Profile")</li>
         <li class="@ViewBag.Jobs"><a href="#">Bookmarked Jobs</a></li>
     </ul>
 </div>

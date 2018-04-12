@@ -1,13 +1,10 @@
 ﻿@{
     Layout = "~/Views/Shared/Profile.cshtml";
-}
-
-@{
     ViewBag.Title = "Resumes";
-    ViewBag.Resumes = "active" ;
+    ViewBag.Resumes = "active";
 }
 
-<h2>CV</h2>
+<h2>Resumes</h2>
 <hr />
 
 @using (Html.BeginForm("UploadCV", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))

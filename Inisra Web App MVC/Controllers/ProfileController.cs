@@ -78,7 +78,7 @@ namespace Inisra_Web_App_MVC.Controllers
             return View(jobSeeker);
         }
 
-        public async Task<ActionResult> Resume()
+        public async Task<ActionResult> Resumes()
         {
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             JobSeeker jobSeeker = await bll.GetJobSeekerById(jobSeekerUser.JobSeekerID.Value);
