@@ -111,6 +111,15 @@ namespace Inisra_Web_App_MVC.BLL
             return invitation;
         }
 
+        public async Task AddResume(int jobSeekerId, byte[] resumeDocument)
+        {
+            JobSeeker jobSeeker = await GetJobSeekerById(jobSeekerId);
+            if (jobSeeker != null) {
+                var CV = new CV { JobSeekerID = jobSeekerId, Document = resumeDocument };
+                jobSeeker.CVs.Add(CV);
+                await context.SaveChangesAsync();
+            }
+        }
 
 
 

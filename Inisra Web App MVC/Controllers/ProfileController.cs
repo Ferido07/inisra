@@ -92,20 +92,10 @@ namespace Inisra_Web_App_MVC.Controllers
             if (file != null && file.ContentLength > 0)
             {
                 var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-                JobSeeker jobSeeker = await bll.GetJobSeekerById(jobSeekerUser.JobSeekerID.Value);
-
                 var fileName = Path.GetFileName(file.FileName);
-                //var path = Path.Combine(Server.MapPath("~/Uploads"));
                 MemoryStream ms = new MemoryStream();
                 file.InputStream.CopyTo(ms);
-
-                CV cv = new CV { JobSeekerID = jobSeeker.ID, Document = ms.ToArray() };
-                
-                jobSeeker.CVs.Add(cv);
-                using (Inisra_Web_App_MVC.DAL.InisraContext db = new DAL.InisraContext())
-                {
-                    await db.SaveChangesAsync();
-                }
+                await bll.AddResume(jobSeekerUser.JobSeekerID.Value, ms.ToArray());
             }
             return RedirectToAction("Details");
         }
