@@ -114,11 +114,27 @@ namespace Inisra_Web_App_MVC.BLL
         public async Task AddResume(int jobSeekerId, byte[] resumeDocument)
         {
             JobSeeker jobSeeker = await GetJobSeekerById(jobSeekerId);
-            if (jobSeeker != null) {
+            if (jobSeeker != null && jobSeeker.CVs.Count < 4) {
                 var CV = new CV { JobSeekerID = jobSeekerId, Document = resumeDocument };
                 jobSeeker.CVs.Add(CV);
                 await context.SaveChangesAsync();
             }
+            //todo add message that CV count is maximum.
+        }
+
+        public async Task RemoveResume(int jobSeekerId, int resumeId)
+        {
+            JobSeeker jobSeeker = await GetJobSeekerById(jobSeekerId);
+            if (jobSeeker != null /*&& jobSeeker.CVs.Any(resume => resume.ID == resumeId)*/)
+            {
+             CV cv = jobSeeker.CVs.FirstOrDefault(resume => resume.ID == resumeId);
+                if (cv != null)
+                {
+                    if(jobSeeker.CVs.Remove(cv))
+                        await context.SaveChangesAsync();
+                }
+            }
+
         }
 
 
