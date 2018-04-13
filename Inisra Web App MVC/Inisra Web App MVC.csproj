@@ -265,6 +265,10 @@
     <Compile Include="Migrations\201801171600258_AddedDocuments.Designer.cs">
       <DependentUpon>201801171600258_AddedDocuments.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804131135588_DocumentValidation.cs" />
+    <Compile Include="Migrations\201804131135588_DocumentValidation.Designer.cs">
+      <DependentUpon>201804131135588_DocumentValidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -427,6 +431,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801171600258_AddedDocuments.resx">
       <DependentUpon>201801171600258_AddedDocuments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804131135588_DocumentValidation.resx">
+      <DependentUpon>201804131135588_DocumentValidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
