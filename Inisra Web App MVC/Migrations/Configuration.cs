@@ -1,8 +1,4 @@
-using Inisra_Web_App_MVC.Models;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity.Migrations;
-using System.Linq;
 
 namespace Inisra_Web_App_MVC.Migrations
 {
@@ -15,6 +11,12 @@ namespace Inisra_Web_App_MVC.Migrations
 
         protected override void Seed(DAL.InisraContext context)
         {
+            /*All the following code is removed because it doesnt work after the first time set up. 
+             * Always adds the new jobseekers because they doent have IDs assigned yet and then the jobSeekerUsers
+             * fail to save since the the jobseekers are not obtained from the database and probably the data may
+             * not exist.
+             * Error: "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details."
+             *  
             //hash of password = Ferid@123
             string passwordHash = "ABuYjU9Mw0+Lu7BW+ie8hiIAoLOTSpkhAQKtloA+Ty53ZyVMjn5QP0dfz8QuIb+pTg==";
             var JobSeekers = new List<JobSeeker>
@@ -109,7 +111,7 @@ namespace Inisra_Web_App_MVC.Migrations
               var result = UserManager.Create(JobSeekerUsers.ElementAtOrDefault<JobSeekerUser>(0), "");
               var result = UserManager.Create(JobSeekerUsers.ElementAtOrDefault<JobSeekerUser>(0), "");
               var result = UserManager.CreateAsync(JobSeekerUsers.ElementAtOrDefault<JobSeekerUser>(0), "");
-              */
+              
 
             var Companies = new List<Company>
             {
@@ -160,9 +162,12 @@ namespace Inisra_Web_App_MVC.Migrations
                     Company = Companies.ElementAtOrDefault(2)
                 }
             };
+            
 
             CompanyUsers.ForEach(cu => context.Users.AddOrUpdate(c => c.Id, cu));
             context.SaveChanges();
+            */
+    
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
