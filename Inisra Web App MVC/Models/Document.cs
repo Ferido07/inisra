@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace Inisra_Web_App_MVC.Models
 {
@@ -15,6 +11,8 @@ namespace Inisra_Web_App_MVC.Models
 
         public virtual JobSeeker JobSeeker { get; set; }
 
+        [Required, FileExtensions(Extensions =".docx", ErrorMessage ="Incorrect file format select a .docx file.")]
+        [MaxLength(1048576, ErrorMessage ="Maximum Size of 1MB Exceeded")]
         public byte[] Document { get; set; }
     }
 
@@ -26,7 +24,8 @@ namespace Inisra_Web_App_MVC.Models
 
         public virtual Job Job { get; set; }
         
+        [Required, FileExtensions(Extensions = ".docx", ErrorMessage = "Incorrect file format select a .docx file.")]
+        [MaxLength(1048576, ErrorMessage = "Maximum Size of 1MB Exceeded")]
         public byte[] Document { get; set; }
-
     }
 }

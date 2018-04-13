@@ -1,23 +1,19 @@
+using Inisra_Web_App_MVC.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using System.Linq;
+
 namespace Inisra_Web_App_MVC.Migrations
 {
-    using DAL;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<Inisra_Web_App_MVC.DAL.InisraContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<DAL.InisraContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Inisra_Web_App_MVC.DAL.InisraContext context)
+        protected override void Seed(DAL.InisraContext context)
         {
             //hash of password = Ferid@123
             string passwordHash = "ABuYjU9Mw0+Lu7BW+ie8hiIAoLOTSpkhAQKtloA+Ty53ZyVMjn5QP0dfz8QuIb+pTg==";
@@ -75,35 +71,35 @@ namespace Inisra_Web_App_MVC.Migrations
                     Email = "feridyz@gmail.com",
                     UserName = "feridyz@gmail.com",
                     PasswordHash = passwordHash,
-                    JobSeeker = JobSeekers.ElementAtOrDefault<JobSeeker>(0)
+                    JobSeeker = JobSeekers.ElementAtOrDefault(0)
                 },
                 new JobSeekerUser
                 {
                     Email = "abenezergenanaw@gmail.com",
                     UserName = "abenezergenanaw@gmail.com",
                     PasswordHash = passwordHash,
-                    JobSeeker = JobSeekers.ElementAtOrDefault<JobSeeker>(1)
+                    JobSeeker = JobSeekers.ElementAtOrDefault(1)
                 },
                 new JobSeekerUser
                 {
                     Email = "Fisseharaya@gmail.com",
                     UserName = "Fisseharaya@gmail.com",
                     PasswordHash = passwordHash,
-                    JobSeeker = JobSeekers.ElementAtOrDefault<JobSeeker>(2)
+                    JobSeeker = JobSeekers.ElementAtOrDefault(2)
                 },
                 new JobSeekerUser
                 {
                     Email = "fishtilahun73@gmail.com",
                     UserName = "fishtilahun73@gmail.com",
                     PasswordHash = passwordHash,
-                    JobSeeker = JobSeekers.ElementAtOrDefault<JobSeeker>(3)
+                    JobSeeker = JobSeekers.ElementAtOrDefault(3)
                 },
                 new JobSeekerUser
                 {
                     Email = "tibebualazar@gmail.com",
                     UserName = "tibebualazar@gmail.com",
                     PasswordHash = passwordHash,
-                    JobSeeker = JobSeekers.ElementAtOrDefault<JobSeeker>(4)
+                    JobSeeker = JobSeekers.ElementAtOrDefault(4)
                 }
             };
 
@@ -147,21 +143,21 @@ namespace Inisra_Web_App_MVC.Migrations
                     Email = "inisra@gmail.com",
                     UserName = "inisra@gmail.com",
                     PasswordHash = passwordHash,
-                    Company = Companies.ElementAtOrDefault<Company>(0)
+                    Company = Companies.ElementAtOrDefault(0)
                 },
                 new CompanyUser
                 {
                     Email = "PASAddis@state.gov",
                     UserName = "PASAddis@state.gov",
                     PasswordHash = passwordHash,
-                    Company = Companies.ElementAtOrDefault<Company>(1)
+                    Company = Companies.ElementAtOrDefault(1)
                 },
                 new CompanyUser
                 {
                     Email = "wayne@enterprise.com",
                     UserName = "wayne@enterprise.com",
                     PasswordHash = passwordHash,
-                    Company = Companies.ElementAtOrDefault<Company>(2)
+                    Company = Companies.ElementAtOrDefault(2)
                 }
             };
 
