@@ -88,14 +88,24 @@ namespace Inisra_Web_App_MVC.Controllers
 
         [HttpPost]
         public async Task<ActionResult> UploadCV(HttpPostedFileBase file)
-        {
+        { 
             if (file != null && file.ContentLength > 0)
             {
                 var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
                 var fileName = Path.GetFileName(file.FileName);
-                MemoryStream ms = new MemoryStream();
-                file.InputStream.CopyTo(ms);
-                await bll.AddResume(jobSeekerUser.JobSeekerID.Value, ms.ToArray());
+                var extensions = fileName.Split('.');
+                var extension = extensions[extensions.Length - 1].ToLower();
+                if (extension.Equals("docx"))
+                {
+                    MemoryStream ms = new MemoryStream();
+                    file.InputStream.CopyTo(ms);
+                    await bll.AddResume(jobSeekerUser.JobSeekerID.Value, ms.ToArray());
+                }
+                else
+                {
+                    ViewBag.Message = "Select a valid file with 'docx' extension.";
+                    return View("Resumes");
+                }
             }
             return RedirectToAction("Details");
         }

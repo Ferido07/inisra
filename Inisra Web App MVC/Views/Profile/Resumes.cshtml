@@ -1,0 +1,69 @@
+﻿@{   
+    Layout = "~/Views/Shared/Profile.cshtml";
+    ViewBag.Title = "Resumes";
+    ViewBag.Resumes = "active";
+}
+
+<h2>Resumes</h2>
+<hr />
+
+@using (Html.BeginForm("UploadCV", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <h6>Uploaded @ViewBag.ResumeCount Resumes </h6>
+        @ViewBag.Message <br />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Resume">Resume</label>
+            <div class="col-md-10">
+                <input type="file" name="file" id="Resume" class="form-control" />
+                <button type="submit" formaction="UploadCV" class="btn btn-primary" disabled>Upload</button>
+            </div>
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Profile", "Index")
+</div>
+
+ 
+@section Scripts {
+<script>
+
+    $("input").on("change", function () {
+        var fileName = $(this).val();
+        if (CheckExt(fileName) === true) {
+            $("button").prop("disabled", false);
+        }
+        else
+            $("button").prop("disabled", true);
+    });
+
+    function CheckExt(fileName) {
+        if (fileName == "") {
+            alert("Select a valid document with '.docx' extension.");
+            return false;
+        }
+        var extensions = fileName.split(".");
+        var extension = extensions[extensions.length - 1];
+        if (extension.toLowerCase() == "docx")
+            return true;
+        else {
+            alert("File with '." + extension + "' extension is invalid. Upload a valid document with '.docx' extension.");
+            return false;
+        }
+        return true;
+    }
+
+</script>
+    @*Scripts.Render("~/bundles/jqueryval")*@
+
+}
+
+

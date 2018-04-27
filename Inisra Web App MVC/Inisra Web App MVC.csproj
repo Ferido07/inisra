@@ -384,7 +384,7 @@
     <Content Include="Views\CompanyProfile\Invitations.cshtml" />
     <Content Include="Views\Shared\Profile.cshtml" />
     <Content Include="Views\Shared\CompanyProfile.cshtml" />
-    <Content Include="Views\Profile\Resume.cshtml" />
+    <Content Include="Views\Profile\Resumes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

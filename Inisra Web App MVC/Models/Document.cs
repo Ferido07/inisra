@@ -11,7 +11,11 @@ namespace Inisra_Web_App_MVC.Models
 
         public virtual JobSeeker JobSeeker { get; set; }
 
-        [Required, FileExtensions(Extensions =".docx", ErrorMessage ="Incorrect file format select a .docx file.")]
+        /*
+         * Caused ENtityValidation Errors which took ages to resolve such a messy attribute.
+         * [FileExtensions(Extensions =".docx", ErrorMessage ="Incorrect file format select a .docx file.")]
+         */
+        [Required]
         [MaxLength(1048576, ErrorMessage ="Maximum Size of 1MB Exceeded")]
         public byte[] Document { get; set; }
     }
@@ -24,7 +28,8 @@ namespace Inisra_Web_App_MVC.Models
 
         public virtual Job Job { get; set; }
         
-        [Required, FileExtensions(Extensions = ".docx", ErrorMessage = "Incorrect file format select a .docx file.")]
+        [Required] 
+        //[FileExtensions(Extensions = ".docx", ErrorMessage = "Incorrect file format select a .docx file.")]
         [MaxLength(1048576, ErrorMessage = "Maximum Size of 1MB Exceeded")]
         public byte[] Document { get; set; }
     }

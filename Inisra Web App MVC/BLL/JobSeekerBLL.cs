@@ -114,7 +114,7 @@ namespace Inisra_Web_App_MVC.BLL
         public async Task AddResume(int jobSeekerId, byte[] resumeDocument)
         {
             JobSeeker jobSeeker = await GetJobSeekerById(jobSeekerId);
-            if (jobSeeker != null && jobSeeker.CVs.Count < 4) {
+            if (jobSeeker != null && jobSeeker.CVs.Count < 3) {
                 var CV = new CV { JobSeekerID = jobSeekerId, Document = resumeDocument };
                 jobSeeker.CVs.Add(CV);
                 await context.SaveChangesAsync();
