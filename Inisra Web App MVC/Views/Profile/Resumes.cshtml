@@ -1,4 +1,5 @@
-﻿@{   
+﻿@model ICollection<Inisra_Web_App_MVC.Models.CV>
+@{   
     Layout = "~/Views/Shared/Profile.cshtml";
     ViewBag.Title = "Resumes";
     ViewBag.Resumes = "active";
@@ -15,8 +16,16 @@
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <h6>Uploaded @ViewBag.ResumeCount Resumes </h6>
+        <h6>Uploaded @Model.Count Resumes </h6>
         @ViewBag.Message <br />
+        <div class="row">
+            @{
+                foreach (var cv in Model)
+                {
+                    <div class="col-md-4 ">@Html.ActionLink(cv.DocumentName, "DownloadCV", new { id = cv.ID })</div>
+                }
+            }
+        </div>
         <div class="form-group">
             <label class="control-label col-md-2" for="Resume">Resume</label>
             <div class="col-md-10">

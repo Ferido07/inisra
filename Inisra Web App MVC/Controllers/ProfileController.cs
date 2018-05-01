@@ -82,8 +82,8 @@ namespace Inisra_Web_App_MVC.Controllers
         {
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
             JobSeeker jobSeeker = await bll.GetJobSeekerById(jobSeekerUser.JobSeekerID.Value);
-            ViewBag.ResumeCount = jobSeeker.CVs.Count;
-            return View();
+            //ViewBag.ResumeCount = jobSeeker.CVs;
+            return View(jobSeeker.CVs);
         }
 
         [HttpPost]
@@ -95,11 +95,12 @@ namespace Inisra_Web_App_MVC.Controllers
                 var fileName = Path.GetFileName(file.FileName);
                 var extensions = fileName.Split('.');
                 var extension = extensions[extensions.Length - 1].ToLower();
-                if (extension.Equals("docx"))
+                if (extension.ToLower().Equals("docx"))
                 {
                     MemoryStream ms = new MemoryStream();
                     file.InputStream.CopyTo(ms);
-                    await bll.AddResume(jobSeekerUser.JobSeekerID.Value, ms.ToArray());
+                    CV cv = new CV { DocumentName = fileName, DocumentType = DocumentType.docx, Document = ms.ToArray() };
+                    await bll.AddResume(jobSeekerUser.JobSeekerID.Value, cv);
                 }
                 else
                 {
@@ -108,6 +109,16 @@ namespace Inisra_Web_App_MVC.Controllers
                 }
             }
             return RedirectToAction("Details");
+        }
+
+        public async Task<FileContentResult> DownloadCV(int id)
+        {
+            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            var cvs = await bll.GetCVs(jobSeekerUser.JobSeekerID.Value);
+            
+            CV cv = cvs.Find(c => c.ID == id);
+            Response.AppendHeader("content-disposition", "attachment;filename="+ cv.DocumentName );
+            return new FileContentResult(cv.Document, "text/plain");
         }
 
 

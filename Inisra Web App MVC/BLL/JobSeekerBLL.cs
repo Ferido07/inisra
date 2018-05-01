@@ -111,12 +111,12 @@ namespace Inisra_Web_App_MVC.BLL
             return invitation;
         }
 
-        public async Task AddResume(int jobSeekerId, byte[] resumeDocument)
+        public async Task AddResume(int jobSeekerId, CV cv)
         {
             JobSeeker jobSeeker = await GetJobSeekerById(jobSeekerId);
             if (jobSeeker != null && jobSeeker.CVs.Count < 3) {
-                var CV = new CV { JobSeekerID = jobSeekerId, Document = resumeDocument };
-                jobSeeker.CVs.Add(CV);
+               // var CV = new CV { JobSeekerID = jobSeekerId, Document = resumeDocument };
+                jobSeeker.CVs.Add(cv);
                 await context.SaveChangesAsync();
             }
             //todo add message that CV count is maximum.
@@ -135,6 +135,18 @@ namespace Inisra_Web_App_MVC.BLL
                 }
             }
 
+        }
+        public async Task<List<CV>> GetCVs(int jobSeekerId)
+        {
+            
+            JobSeeker js = await GetJobSeekerById(jobSeekerId);
+            if (js != null)
+            {
+                var cv = js.CVs.ToList();
+                return cv;
+            }
+            else
+                return null;                   
         }
 
 
