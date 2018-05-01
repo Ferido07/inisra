@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using Inisra_Web_App_MVC.BLL;
 using Inisra_Web_App_MVC.DTOs;
+using System.IO;
 
 namespace Inisra_Web_App_MVC.Controllers
 {
@@ -77,10 +78,28 @@ namespace Inisra_Web_App_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Company")]
-        public async Task<ActionResult> Post([Bind(Include = "CompanyID,Title,Profession,Salary,SalaryRate,IsOpen,IsInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job)
+        public async Task<ActionResult> Post([Bind(Include = "CompanyID,Title,Profession,Salary,SalaryRate,IsOpen,IsInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var extensions = fileName.Split('.');
+                    var extension = extensions[extensions.Length - 1].ToLower();
+                    if (extension.ToLower().Equals("docx"))
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        file.InputStream.CopyTo(ms);
+                        JobDescription JD = new JobDescription { DocumentName = fileName, DocumentType = DocumentType.docx, Document = ms.ToArray() };
+                        job.JobDescriptionDocument = JD;
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Select a valid file with 'docx' extension.";
+                        return View(job);
+                    }
+                }
                 await bll.AddJob(job);
                 return RedirectToAction("Index");
             }
@@ -116,10 +135,28 @@ namespace Inisra_Web_App_MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Company")]
-        public async Task<ActionResult> Edit([Bind(Include = "ID,CompanyID,Title,Profession,Salary,SalaryRate,IsOpen,IsInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,CompanyID,Title,Profession,Salary,SalaryRate,IsOpen,IsInvitationOnly,Location,ApplicationDeadlineDate,Description")] Job job, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var extensions = fileName.Split('.');
+                    var extension = extensions[extensions.Length - 1].ToLower();
+                    if (extension.ToLower().Equals("docx"))
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        file.InputStream.CopyTo(ms);
+                        JobDescription JD = new JobDescription { JobID = job.ID, Job=job, DocumentName = fileName, DocumentType = DocumentType.docx, Document = ms.ToArray() };
+                        job.JobDescriptionDocument = JD;
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Select a valid file with 'docx' extension.";
+                        return View(job);
+                    }
+                }
                 await bll.UpdateJob(job);
                 return RedirectToAction("Index");
             }          

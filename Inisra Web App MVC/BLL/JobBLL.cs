@@ -100,6 +100,23 @@ namespace Inisra_Web_App_MVC.BLL
                 }
                 else
                     context.Locations.Add(job.Location);
+                if (job.JobDescriptionDocument != null)
+                {
+                    var jd = await context.JobDescriptions.FindAsync(job.ID);
+                    if (jd != null)
+                    {
+                        var newJD = job.JobDescriptionDocument;
+                        jd.Document = newJD.Document;
+                        jd.DocumentName = newJD.DocumentName;
+                        jd.DocumentType = newJD.DocumentType;
+                        jd.ValidityConfirmed = false;
+                        jd.LastUpdated = DateTime.Now;
+                        job.JobDescriptionDocument = jd;
+                        context.Entry(jd).State = EntityState.Modified;
+                    }
+                    else
+                        context.JobDescriptions.Add(job.JobDescriptionDocument);                       
+                }
                 //check if the applications deadline is modified if yes then chck if its later than current date.
                 context.Entry(job).State = EntityState.Modified;
                 await context.SaveChangesAsync();
