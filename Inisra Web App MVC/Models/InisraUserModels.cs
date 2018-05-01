@@ -73,6 +73,8 @@ namespace Inisra_Web_App_MVC.Models
         public virtual ICollection<Certificate> Certificates { get; set; } 
         
         public virtual ICollection<CV> CVs { get; set; }
+
+        public virtual ICollection<Job> SavedJobs { get; set; }
         
        // public virtual ICollection<Contact> Contacts { set; get; }
         

@@ -78,6 +78,11 @@ namespace Inisra_Web_App_MVC.DAL
             modelBuilder.Entity<Institution>().HasMany(l => l.Locations).WithMany(i => i.Institutions)
                 .Map(left => left.MapLeftKey("InstitutionID").MapRightKey("LocationID")
                 .ToTable("InstitutionLocations", "dbo"));
+
+            modelBuilder.Entity<JobSeeker>().HasMany(js => js.SavedJobs).WithMany()
+                .Map(left => left.MapLeftKey("JobSeekerID").MapRightKey("JobID")
+                .ToTable("JobSeekerSavedJobs", "dbo"));
+                
         }
 
         
