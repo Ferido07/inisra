@@ -277,6 +277,10 @@
     <Compile Include="Migrations\201805011843410_SavedJobs.Designer.cs">
       <DependentUpon>201805011843410_SavedJobs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805240830125_RenameSavedJobsToBookmarkedJobs.cs" />
+    <Compile Include="Migrations\201805240830125_RenameSavedJobsToBookmarkedJobs.Designer.cs">
+      <DependentUpon>201805240830125_RenameSavedJobsToBookmarkedJobs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Application.cs" />
@@ -448,6 +452,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805011843410_SavedJobs.resx">
       <DependentUpon>201805011843410_SavedJobs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805240830125_RenameSavedJobsToBookmarkedJobs.resx">
+      <DependentUpon>201805240830125_RenameSavedJobsToBookmarkedJobs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -81,7 +81,7 @@ namespace Inisra_Web_App_MVC.DAL
 
             modelBuilder.Entity<JobSeeker>().HasMany(js => js.SavedJobs).WithMany()
                 .Map(left => left.MapLeftKey("JobSeekerID").MapRightKey("JobID")
-                .ToTable("JobSeekerSavedJobs", "dbo"));
+                .ToTable("BookmarkedJobs", "dbo"));
                 
         }
 
