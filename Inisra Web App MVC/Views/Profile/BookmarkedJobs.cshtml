@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Inisra_Web_App_MVC.DTOs.JobDto>
+
+@{
+
+    Layout = "~/Views/Shared/Profile.cshtml";
+    ViewBag.Title = "Bookmarked Jobs";
+    ViewBag.BookmarkedJobs = "active";
+}
+
+<h2>Bookmarked Jobs</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <table class="table">
+
+        <tr>
+            <th>Company </th>
+            <th>Job Title</th>
+            <th>Application Deadline Date</th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.CompanyName, "Details", "Companies", new { id = item.CompanyId }, new { })
+                </td>
+                <td>
+                    @Html.ActionLink(item.Title, "Details", "Jobs", new { id = item.Id }, new { })
+                </td>
+                <td>
+                    @Html.DisplayFor(m => item.ApplicationDeadlineDate)
+                </td>
+                <td>
+                    <button type="submit" name="jobID" value="@item.Id" class="btn btn-default" formaction="RemoveBookmark" formmethod="post">Remove Bookmark</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+}

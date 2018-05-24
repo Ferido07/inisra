@@ -176,6 +176,21 @@ namespace Inisra_Web_App_MVC.Controllers
             return View(invitations);
         }
 
+        public async Task<ActionResult> BookmarkedJobs()
+        {
+            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            var bookmarkedJobs = await bll.GetBookmarkedJobs(jobSeekerUser.JobSeekerID.Value);
+            return View(bookmarkedJobs);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveBookmark(int jobId)
+        {
+            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            await bll.RemoveBookmark(jobSeekerUser.JobSeekerID.Value, jobId);
+            return RedirectToAction("BookmarkedJobs");
+        }
 
         protected override void Dispose(bool disposing)
         {

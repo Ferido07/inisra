@@ -235,7 +235,7 @@ namespace Inisra_Web_App_MVC.Controllers
         public async Task<ActionResult> ApplyConfirmed(int id)
         {
             var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
-            using (JobSeekerBLL jsbll = new BLL.JobSeekerBLL())
+            using (JobSeekerBLL jsbll = new JobSeekerBLL())
             {
                 var application = await jsbll.GetApplication(jobSeekerUser.JobSeekerID.Value, id);
                 if (application == null)
@@ -244,6 +244,18 @@ namespace Inisra_Web_App_MVC.Controllers
                 }
             }        
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "JobSeeker")]
+        public async Task<ActionResult> BookmarkJob(int jobId)
+        {
+            var jobSeekerUser = (JobSeekerUser)(await UserManager.FindByIdAsync(User.Identity.GetUserId()));
+            using (JobSeekerBLL jsbll = new JobSeekerBLL())
+            {
+                await jsbll.BookmarkJob(jobSeekerUser.JobSeekerID.Value, jobId);
+                return RedirectToAction("Index");
+            }
         }
 
         protected override void Dispose(bool disposing)

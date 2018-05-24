@@ -84,7 +84,5 @@ namespace Inisra_Web_App_MVC.DAL
                 .ToTable("BookmarkedJobs", "dbo"));
                 
         }
-
-        
     }
 }

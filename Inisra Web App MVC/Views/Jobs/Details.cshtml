@@ -101,19 +101,25 @@
 
     </dl>
 </div>
-<p>
-   @if (!User.IsInRole("Company"))
-   {
-       @Html.ActionLink("Apply", "Apply", new { id = Model.Id })
-       <label> | </label>
-   } 
-   
-   @if (ViewBag.IsOwner?? false)
-   {
-       @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
-       <label> | </label>
-       @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
-       <label> | </label>
-   }
-       @Html.ActionLink("Back to List", "Index")
-</p>
+<form>
+    @Html.AntiForgeryToken()
+    <p>
+        @if (!User.IsInRole("Company"))
+        {
+            @Html.ActionLink("Apply", "Apply", new { id = Model.Id })
+            <label> | </label>
+        }
+
+        @if (ViewBag.IsOwner ?? false)
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+            <label> | </label>
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+            <label> | </label>
+        }
+        @Html.ActionLink("Back to List", "Index")
+
+        <button type="submit" class="btn btn-default" name="jobId" value="@Model.Id" formaction="~/Jobs/BookmarkJob" formmethod="post">Bookmark</button>
+
+    </p>
+</form>
