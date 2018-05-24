@@ -74,7 +74,7 @@ namespace Inisra_Web_App_MVC.Models
         
         public virtual ICollection<CV> CVs { get; set; }
 
-        public virtual ICollection<Job> SavedJobs { get; set; }
+        public virtual ICollection<Job> BookmarkedJobs { get; set; }
         
        // public virtual ICollection<Contact> Contacts { set; get; }
         

@@ -148,8 +148,47 @@ namespace Inisra_Web_App_MVC.BLL
             else
                 return null;                   
         }
+        public async Task BookmarkJob(int jobSeekerId, int jobId)
+        {
+            
+            JobSeeker js = await GetJobSeekerById(jobSeekerId);
+            var bookmarkedJob = js.BookmarkedJobs.Where(j => j.ID == jobId).FirstOrDefault();
+            if (bookmarkedJob == null)
+            {
+                Job job = await context.Jobs.FindAsync(jobId);
+                js.BookmarkedJobs.Add(job);
+                await context.SaveChangesAsync();
+            }
+            
+           /* var bookmarkedJob =context.JobSeekers.Where(js => js.ID == jobSeekerId).Single().BookmarkedJobs.Where(j => j.ID == jobId).FirstOrDefault();
+            if (bookmarkedJob == null)
+            {
+                
+            }
+            */
+        }
+        /*todo  ** Really Important find out if all the GetXXX Jobseeker are necessary considering the alternatives of 
+             using eager loading when a persons profile is loaded and lazy loading for other details like checking for a
+             presense of an application before adding a new application. 
+             And with relation to their usage with the android app.
+        **/
+        public async Task<List<JobDto>> GetBookmarkedJobs(int jobSeekerId)
+        {
+            var js = await GetJobSeekerById(jobSeekerId);
+            var bookmarkedJobs = js.BookmarkedJobs.ToList();
+            return AutoMapper.Mapper.Map<List<JobDto>>(bookmarkedJobs);
+        }
 
-
+        public async Task RemoveBookmark(int jobSeekerId, int jobId)
+        {
+            var js = await GetJobSeekerById(jobSeekerId);
+            var job = js.BookmarkedJobs.Where(j => j.ID == jobId).FirstOrDefault();
+            if (job != null)
+            {
+                js.BookmarkedJobs.Remove(job);
+                await context.SaveChangesAsync();
+            }
+        }
 
 
         private bool disposed = false;
