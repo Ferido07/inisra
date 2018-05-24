@@ -68,11 +68,30 @@
 
     </dl>
 </div>
+
+<h6>Uploaded Resumes </h6>
+<div class="row">
+    @{
+        if (Model.CVs.Count == 0)
+        {
+            <p>No CVs have been uploaded by @Model.FirstName @Model.LastName.</p>
+        }
+        else {
+            foreach (var cv in Model.CVs)
+            {
+            <div class="col-md-4 ">@Html.ActionLink(cv.DocumentName, "DownloadCV", new { id = cv.ID, jobSeekerId = Model.Id })</div>
+            }
+        }
+        <br />
+        <br />
+    }
+</div>
+
 <p>
     @if (User.IsInRole("Company"))
-    {
-        <label> | </label>
+    { 
         @Html.ActionLink("Invite to Job", "Invite", "CompanyProfile", new { jobSeekerID = Model.Id }, new { })
+        <label> | </label>
     }
     @Html.ActionLink("Back to List", "Index")
 </p>

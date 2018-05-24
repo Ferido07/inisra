@@ -33,6 +33,16 @@ namespace Inisra_Web_App_MVC.Controllers
             var dto = AutoMapper.Mapper.Map<JobSeeker, JobSeekerDto>(jobSeeker);
             return View(dto);
         }
+
+        [Authorize(Roles ="Company")]  
+        public async Task<FileContentResult> DownloadCV(int id, int jobSeekerId)
+        {
+            
+            var cvs = await bll.GetCVs(jobSeekerId);
+            CV cv = cvs.Find(c => c.ID == id);
+            Response.AppendHeader("content-disposition", "attachment;filename=" + cv.DocumentName);
+            return new FileContentResult(cv.Document, "text/plain");
+        }
         /*
         // GET: JobSeekers/Create
         public ActionResult Create()
