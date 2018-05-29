@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Documents\CV.cs" />
     <Compile Include="Documents\JobDescription.cs" />
+    <Compile Include="Operations\SolrOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

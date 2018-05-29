@@ -458,6 +458,12 @@
       <DependentUpon>201805240830125_RenameSavedJobsToBookmarkedJobs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Inisra.Solr\Inisra.Solr.csproj">
+      <Project>{140438ce-bfd4-4354-b305-9b4016506024}</Project>
+      <Name>Inisra.Solr</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -2,12 +2,15 @@
 
 namespace Inisra.Solr.Documents
 {
-    internal class CV
+    public class CV
     {
         [SolrUniqueKey("id")]
         public string Id { get; set; }
 
         [SolrField("owner")]
         public string Owner { get; set; }
+
+        [SolrField("title")]
+        public string Title { get; set; }
     }
 }
