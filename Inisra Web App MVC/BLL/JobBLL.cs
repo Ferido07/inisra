@@ -70,7 +70,7 @@ namespace Inisra_Web_App_MVC.BLL
 
         public async Task AddJob(Job job)
         {
-            if (CheckJobValidity(job)) {
+            if (await CheckJobValidity(job)) {
 
                 //check if the location already Exists. if the location doesnt exist the default value returned is null
                 // the "==" operator is case insensitive.
@@ -84,12 +84,24 @@ namespace Inisra_Web_App_MVC.BLL
                     context.Locations.Add(job.Location);
                 context.Jobs.Add(job);
                 await context.SaveChangesAsync();
+                var jd = job.JobDescriptionDocument;
+                if (jd != null)
+                {
+                    await Inisra.Solr.Operations.SolrOperations.AddJobDescriptionAsync(
+                                fileStream: new System.IO.MemoryStream(jd.Document),
+                                id: ""+ jd.JobID,
+                                resourceName: jd.DocumentName,
+                                owner: job.Company.Name,
+                                title: job.Title
+                    );
+                }
+
             }
         } 
 
         public async Task UpdateJob(Job job)
         {
-            if (CheckJobValidity(job)) {
+            if (await CheckJobValidity(job)) {
 
                 //check if the location already Exists. if the location doesnt exist the default value returned is null         
                 var location = await context.Locations.SingleOrDefaultAsync(l => l.Name == job.Location.Name);
@@ -113,6 +125,14 @@ namespace Inisra_Web_App_MVC.BLL
                         jd.LastUpdated = DateTime.Now;
                         job.JobDescriptionDocument = jd;
                         context.Entry(jd).State = EntityState.Modified;
+
+                        await Inisra.Solr.Operations.SolrOperations.AddJobDescriptionAsync(
+                                    fileStream: new System.IO.MemoryStream(jd.Document),
+                                    id: "" + jd.JobID,
+                                    resourceName: jd.DocumentName,
+                                    owner: job.Company.Name,
+                                    title: job.Title
+                        );
                     }
                     else
                         context.JobDescriptions.Add(job.JobDescriptionDocument);                       
@@ -126,7 +146,7 @@ namespace Inisra_Web_App_MVC.BLL
 
         public async Task DeleteJob(Job job)
         {
-            if (CheckJobValidity(job))
+            if (await CheckJobValidity(job))
             {
 
 
@@ -135,7 +155,7 @@ namespace Inisra_Web_App_MVC.BLL
             }
         }
 
-        private bool CheckJobValidity(Job job)
+        private async Task<bool> CheckJobValidity(Job job)
         {
             //todo: Check for job
             //check application deadline is later than the post date
@@ -143,7 +163,14 @@ namespace Inisra_Web_App_MVC.BLL
              * For Use with update so the tope check comment can be removed if ti is implemented here.
              * check if the applications deadline is modified if yes then chck if its later than current date.
              */
-            return true;
+            var company = await context.Companies.FindAsync(job.CompanyID);
+            if (company != null)
+            {
+                job.Company = company;
+                return true;
+            }
+            else
+                return false;
         }
 
         private bool disposed = false;

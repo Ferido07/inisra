@@ -118,6 +118,18 @@ namespace Inisra_Web_App_MVC.BLL
                // var CV = new CV { JobSeekerID = jobSeekerId, Document = resumeDocument };
                 jobSeeker.CVs.Add(cv);
                 await context.SaveChangesAsync();
+                cv = jobSeeker.CVs.OrderBy(c => c.LastUpdated).Last();
+
+                if (cv != null)
+                {
+                    await Inisra.Solr.Operations.SolrOperations.AddCVAsync(
+                        fileStream: new System.IO.MemoryStream(cv.Document),
+                        id: "" + cv.ID,
+                        resourceName: cv.DocumentName,
+                        owner: jobSeeker.FullName,
+                        title: cv.DocumentName
+                    );
+                }
             }
             //todo add message that CV count is maximum.
         }

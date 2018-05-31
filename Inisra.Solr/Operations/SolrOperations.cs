@@ -12,7 +12,7 @@ namespace Inisra.Solr.Operations
 {
     public class SolrOperations
     {
-        public async Task AddCVAsync(Stream fileStream, string id, string resourceName, string owner, string title)
+        public static async Task AddCVAsync(Stream fileStream, string id, string resourceName, string owner, string title)
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<CV>>();
             var response = await solr.ExtractAsync(
@@ -28,7 +28,7 @@ namespace Inisra.Solr.Operations
                            );
         }
 
-        public async Task AddJobDescriptionAsync(Stream fileStream, string id, string resourceName, string owner, string title)
+        public static async Task AddJobDescriptionAsync(Stream fileStream, string id, string resourceName, string owner, string title)
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<JobDescription>>();
             var response = await solr.ExtractAsync(
@@ -44,14 +44,14 @@ namespace Inisra.Solr.Operations
                            );
         }
 
-        public async Task<List<CV>> CVQueryAsync(string query)
+        public static async Task<List<CV>> CVQueryAsync(string query)
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<CV>>();
             var cvs = await solr.QueryAsync(query);
             return cvs.ToList();
         }
 
-        public async Task<List<JobDescription>> JobDescriptionQueryAsync(string query)
+        public static async Task<List<JobDescription>> JobDescriptionQueryAsync(string query)
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<JobDescription>>();
             var jds = await solr.QueryAsync(query);
