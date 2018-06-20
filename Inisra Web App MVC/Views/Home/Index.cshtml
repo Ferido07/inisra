@@ -5,3 +5,14 @@
 <div class="">
     <h1>Inisra</h1>
 </div>
+
+@using (@Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    <p class="form-inline">
+        <label for="queryTB" class="control-label">Search Jobs </label>
+        @Html.TextBox("query", "", htmlAttributes: new { @id = "queryTB", @class = "form-group form-control" })
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </p>
+}
+
+

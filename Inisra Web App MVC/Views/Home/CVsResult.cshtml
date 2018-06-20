@@ -1,0 +1,52 @@
+﻿
+@model IEnumerable<Inisra.Solr.Documents.CV>
+@{
+    ViewBag.Title = "CVs Result";
+}
+
+<div class="">
+    <h1>Inisra</h1>
+</div>
+
+@using (@Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    <p class="form-inline">
+        <label for="CVTB" class="control-label">Search Job Seekers </label>
+        @Html.TextBox("query", "", htmlAttributes: new { @id = "CVTB", @class = "form-group form-control" })
+        @Html.Hidden("documentType","CV")
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </p>
+}
+
+@if (Model != null)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Owner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner)
+                </td>
+                <td>
+                    @Html.ActionLink(item.Title, "DownloadCV", "Profile", new { id = item.Id }, htmlAttributes: new { })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <p>No Documents Match Your Search</p>
+}
+
+
