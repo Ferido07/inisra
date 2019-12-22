@@ -15,7 +15,14 @@
         @Html.Hidden("documentType", "JD")
         <input type="submit" value="Search" class="btn btn-primary" />
     </p>
+
+    <ul class="nav nav-tabs">
+        <li class="active">@Html.ActionLink("Jobs", "Index", new { documentType = "JD" }) </li>
+        <li>@Html.ActionLink("Job Seekers", "Index", new { documentType = "CV" }) </li>
+    </ul>
+    <br/>
 }
+
 
 @if (Model != null)
 {

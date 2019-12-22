@@ -9,21 +9,26 @@ namespace Inisra_Web_App_MVC.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<ActionResult> Index(string query,string documentType)
+        public async Task<ActionResult> Index(string query, string documentType)
         {
-            if (String.IsNullOrEmpty(query))
-                return View();
-            else
+
+            if (string.Equals(documentType, "CV"))
             {
-                if (String.Equals(documentType, "CV")) {
-                    var cvDocuments = await Inisra.Solr.Operations.SolrOperations.CVQueryAsync(query);
-                    return View("CVsResult", cvDocuments);
-                }
-                else { 
-                    var jdDocuments = await Inisra.Solr.Operations.SolrOperations.JobDescriptionQueryAsync(query);
-                    return View("JDsResult", jdDocuments);
-                }
+                if (string.IsNullOrEmpty(query))
+                    return View("CVsResult");
+                var cvDocuments = await Inisra.Solr.Operations.SolrOperations.CVQueryAsync(query);
+                return View("CVsResult", cvDocuments);
             }
+            else if (string.Equals(documentType, "JD"))
+            {
+                if (string.IsNullOrEmpty(query))
+                    return View("JDsResult");
+                var jdDocuments = await Inisra.Solr.Operations.SolrOperations.JobDescriptionQueryAsync(query);
+                return View("JDsResult", jdDocuments);
+            }
+            else
+                return View();
+            
         }
 
         public ActionResult About()
